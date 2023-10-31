@@ -2,11 +2,12 @@
 module.exports = {
     content: [
         "./resources/**/*.blade.php",
+        "./node_modules/flowbite/**/*.js",
         "./resources/**/*.js",
         "./resources/**/*.vue",
     ],
     theme: {
         extend: {},
     },
-    plugins: [],
+    plugins: [require("flowbite/plugin")],
 };
