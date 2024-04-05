@@ -15,6 +15,7 @@
     
     @vite('resources/css/app.css')
     {{-- @vite(['resources/css/app.css','resources/js/app.js']) --}}
+    @livewireStyles
 </head>
 <body>
     @include('pages.admin.partials.navbar')
@@ -28,6 +29,7 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    @livewireScripts
 </body>
 
 </html>

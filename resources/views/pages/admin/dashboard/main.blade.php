@@ -62,5 +62,8 @@
       </div>
     </div>
   </div>
+
+  @livewire('admin.category.index')
+  @livewire('admin.product.index')
   
 @endsection
