@@ -10,6 +10,9 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    {{-- font and icon --}}
+    <script src="https://kit.fontawesome.com/645c6ff9e5.js" crossorigin="anonymous"></script>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     
