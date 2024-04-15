@@ -10,25 +10,37 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithPagination;
-    
-    public $categories, $products;
-    public $name;
+    protected $categories;
+    // public $categories ;
+    public $name, $products;
     public $selectedCategory;
 
     
     public function render()
     {
-        $categories = Category::paginate(10);
+        
+        $categories = Category::paginate(5);
+        // dd($categories);
+        return view('livewire.admin.category.index', compact('categories'));
+        
+    }
+    // public function render()
+    // {
+        
+    //     $this->categories = Category::all();
+    //     $categories = Category::paginate(5);
 
-        return view('livewire.admin.category.index',[
-            'category' => $categories,
-        ]);
-    }
-    public function mount()
-    {
-        $this->categories = Category::all();
-        // $this->products = Product::all();
-    }
+    //     return view('livewire.admin.category.index', [
+    //         'categories' => $categories,
+    //     ]);
+    // }
+    
+    // public function mount()
+    // {
+    //     $this->categories = Category::all();
+        
+    //     // $this->products = Product::all();
+    // }
 
 
     public function create()
@@ -44,6 +56,7 @@ class Index extends Component
         Category::create(['category_name' => $this->name]);
         $this->reset('name');
         $this->categories = Category::all();
+        
         // $this->emit('categoryCreated');
         // session()->flash('message', 'Category created successfully!');
         toastr()->success('Data has been saved successfully!', 'Congrats',['timeOut' => 3500]);

@@ -5,6 +5,7 @@ module.exports = {
         "./node_modules/flowbite/**/*.js",
         "./resources/**/*.js",
         "./resources/**/*.vue",
+        "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
     ],
     darkMode: "class",
     theme: {

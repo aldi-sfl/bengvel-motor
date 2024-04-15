@@ -68,11 +68,14 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $startingIndex = ($categories->currentPage() - 1) * $categories->perPage() + 1;
+                @endphp
                 @foreach ($categories as $category)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="px-6 py-4">
-                        {{-- {{ $category->id }} --}}
-                        {{ $loop->index + 1 }}
+                        {{-- {{ $loop->index + 1 }} --}}
+                        {{ $startingIndex++ }}
                     </td>
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ $category->category_name }}
@@ -148,7 +151,7 @@
                 @endforeach
             </tbody>
         </table>
-        {{-- {{ $categories->link() }} --}}
+        {{ $categories->links() }}
         
     </div>
     </div>
