@@ -50,6 +50,7 @@ Route::post('/google/addPhone', [SocialController::class, 'addPhone'])->name('go
 
 Route::view('/admin', 'pages.admin.dashboard.main');
 Route::view('/produk', 'pages.admin.product');
+Route::view('/category', 'pages.admin.category');
 Route::view('/user', 'pages.admin.user');
 
 

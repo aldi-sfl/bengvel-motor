@@ -15,6 +15,8 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+    
     
     @vite('resources/css/app.css')
     {{-- @vite(['resources/css/app.css','resources/js/app.js']) --}}
@@ -23,7 +25,6 @@
 <body>
     @include('pages.admin.partials.navbar')
     <div class="container mx-auto px-5 py-4" >
-        {{-- @yield('content') --}}
     </div>
 
     <!-- Scripts -->
