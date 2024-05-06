@@ -8,57 +8,40 @@ use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Log;
 
 class Index extends Component
 {
     use WithPagination;
     use WithFileUploads;
     protected $products;
-    public  $category_id, $categories, $selectedProduct;
+    public $searchTerm = '';
+    public  $category_id, $categories, $selectedProduct, $updateSelectedProduct;
     public $image,$name, $price, $description,  $stock;
     // public $images,$name, $price, $description,  $stock =[] ;
     
 
     public function render()
     {
-        $products = Product::paginate(10);
+        // search system
+        $products = Product::with('images')
+                    ->when($this->searchTerm, function ($query) {
+                        $query->where('name', 'like', '%'.$this->searchTerm.'%')
+                              ->orWhere('description', 'like', '%'.$this->searchTerm.'%');
+                    })
+                    ->paginate(5);
+
         $this->categories = Category::all();
-        // dd($categories);
         return view('livewire.admin.product.index', compact('products'));
+        
+        // $products = Product::with('images')->paginate(5);
+        // $this->categories = Category::all();
+        
+        // return view('livewire.admin.product.index', compact('products'));
     }
     
 
-    // public function mount() 
-    // {
-    //     $this->products = Product::all();
-    //     $this->categories = Category::all();
-    // }
 
-    // protected $rules = [
-    //     // 'name' => 'required|unique:products,name',
-    //     'name'=>'required|string',
-    //     'price' => 'required|numeric',
-    //     'description' => 'required',
-    //     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    //     'category_id' => 'exists:categories,id',
-    //     'stock' => 'required|numeric',
-    // ];
-
-    // public function store()
-    // {
-       
-    //     $validatedData = $this->validate();
-
-    //     $validatedData['image'] = $this->image->store('products', 'public');
-        
-    //     Product::create($validatedData);
-    //     $this->reset();
-    //     $this->products = Product::all();
-    //     $this->categories = Category::all();
-    //     session()->flash('message', 'Product created successfully!');
-
-       
-    // }
 
     public function store()
     {
@@ -66,13 +49,12 @@ class Index extends Component
         $validatedData = $this->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
-            'description' => 'required',
+            'description' => 'required|string|max:255',
             'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'category_id' => 'exists:categories,id',
             'stock' => 'required|numeric',
         ]);
-
-
+    
         // Create a new product record in the database
         $product = Product::create([
             'name' => $validatedData['name'],
@@ -81,13 +63,19 @@ class Index extends Component
             'category_id' => $validatedData['category_id'],
             'stock' => $validatedData['stock'],
         ]);
-
-        // Create a new product image record in the database
+    
+        // Check how many images this product already has
+        $existingImagesCount = $product->images()->count();
+    
+        // Process uploaded images
         if (!empty($this->image)) {
-            // Process uploaded images
             foreach ($this->image as $key => $image) {
-                // Validate and store the image in the storage folder
-                $imagePath = $image->store('products', 'public');
+                $existingImagesCount++;
+                // Format the image name using product name and the image count
+                $imageName = $product->name . '-' . $existingImagesCount . '.' . $image->getClientOriginalExtension();
+                
+                // Store the image with the formatted name
+                $imagePath = $image->storeAs('products', $imageName, 'public');
                 
                 // Create a new product image record in the database
                 $product->images()->create([
@@ -95,15 +83,16 @@ class Index extends Component
                 ]);
             }
         }
-        
-
+    
         // Reset form fields and fetch updated product and category data
         $this->reset();
         $this->products = Product::all();
         $this->categories = Category::all();
+        
         // Show success message
         toastr()->success('Data has been saved successfully!', 'Congrats',['timeOut' => 3500]);
     }
+    
 
 
     // public function edit($id)
@@ -153,38 +142,80 @@ class Index extends Component
     //     $this->reset(['name','price','description','stock','image','category_id', 'selectedProduct']);
     //     session()->flash('message', 'Product Update successfully!');
     // }
+    public function updateProduct($id)
+    {
+        $products = Product::find($id);
 
-    
+        if ($products) {
+            $this->updateSelectedProduct = $products;
+        }
+    }
+
+    // old delete
     public function delete($id)
     {
         Product::destroy($id);
         $this->products = Product::all();
-        $this->showModalDelete = false;
         toastr()->success('Data has been deleted!',['timeOut' => 3500]);
         
     }
 
+    // new delete
+    public $showDeleteModal = false;
+    public $deletingProductId = null;
+
+    public function showDeleteModal($productId)
+    {
+        $this->deletingProductId = $productId;
+        $this->showDeleteModal = true;
+    }
+
+    public function deleteProduct()
+    {
+        $product = Product::find($this->deletingProductId);
+        if ($product) {
+            $product->delete();
+            $this->showDeleteModal = false; // Close the modal on successful deletion
+            toastr()->success('Data has been deleted!',['timeOut' => 3500]);
+        }
+    }
+
+    public function closeDeleteModal()
+    {
+        $this->showDeleteModal = false;
+    }
+
+
+
+    
+    public function getProduct($id)
+    {
+        $products = Product::find($id);
+
+        if ($products) {
+            $this->selectedProduct = $products;
+        }
+        
+    }
 
     public $showDropdown = false;
     public $showModalAdd = false;
-    public $showModalDelete = false;
-    public $showModalUpdate = false;
-    public $showModalPreview = false;
-    public $modalId,$deleteId, $showProduct, $dropdownId;
+    // public $showModalDelete = false;
+   
+    public $dropdownId;
     
     
     public function showDropdown($id)
     {
-        $this->dropdownId = $id;
-        $this->showDropdown = true;
-        $this->dispatchBrowserEvent('show-dropdown', ['id' => $id]);
+      
+        $this->dropdownId = $this->dropdownId === $id ? null : $id;
     }
-
+    
     public function closeDropdown()
     {
-        
-        $this->showDropdown = false;
+        $this->dropdownId = null;
     }
+    
 
     public function showModalAdd()
     {
@@ -192,66 +223,12 @@ class Index extends Component
         $this->showModalAdd = true;
     }
     
-    public function showModalDelete($id)
-    {
-        $this->deleteId = $id; 
-        
-        $this->showModalDelete = true;
-    }
-    // public function showModalUpdate($id, $categoryName)
-    // {
-    //     $this->modalId = $id; 
-    //     $this->name = $categoryName;
-    //     $this->showModalUpdate = true;
-    //     // dd($this->name);
-    // }
-    public $previewName, $previewPrice, $previewDescription, $previewImage, $previewStock, $previewCategory ;
-    public function showModalPreview($id)
-    {
-        $this->closeModalAdd();
-        $this->closeModalDelete();
-        // dd($id);
-        $this->modalId = $id; 
-        $this->showModalPreview = true;
-            
-        $showProduct = Product::find($id);
-        $this->previewName = $showProduct->name;
-        $this->previewPrice = $showProduct->price;
-        $this->previewDescription = $showProduct->description;
-        $this->previewImage = $showProduct->image;
-        $this->previewStock = $showProduct->stock;
-        $this->previewCategory = $showProduct->category->category_name;
-    }
-
-
+   
     // Function to close the modal
     public function closeModalAdd()
     {
         $this->showModalAdd = false;
     }
-    public function closeModalDelete()
-    {
-        $this->showModalDelete = false;
-    }
-    public function closeModalUpdate()
-    {
-        $this->showModalUpdate = false;
-        $this->reset('name');
-    }
-    public function closeModalPreview()
-    {
-        $this->showModalPreview = false;
-         $this->products = Product::all();
-        $this->categories = Category::all();
-    }
-
-    // pagiantion refresh page
-    public function updatedPage($page)
-    {
-        $this->emit('pageChanged', $page);
-        
-    }
-  
-
+   
 
 }

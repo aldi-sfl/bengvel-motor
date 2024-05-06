@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\SocialController;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\PasswordReset;
+use App\Http\Controllers\SocialController;
+use App\Http\Livewire\Admin\Product\Preview;
 
 
 
@@ -48,8 +49,11 @@ Route::post('/google/addPhone', [SocialController::class, 'addPhone'])->name('go
 
 
 
-Route::view('/admin', 'pages.admin.dashboard.main');
+
 Route::view('/produk', 'pages.admin.product');
+Route::view('/preview', 'pages.admin.previewProduct');
+Route::view('/edit', 'pages.admin.updateProduct');
+
 Route::view('/category', 'pages.admin.category');
 Route::view('/user', 'pages.admin.user');
 
@@ -70,10 +74,16 @@ Route::middleware('guest')->group(function () {
     // Route::get('/forgot-password', PasswordReset::class)->name('forgot-password');
     // Route::get('/confirm-reset', PwdResetConfirm::class)->name('confirm-reset');
 });
+
 Route::middleware('auth')->group(function () {
 //    Route::get('/', SocialController::class)->name('redirect');
    
       
+});
+Route::middleware('admin')->group(function () {
+//    Route::get('/', SocialController::class)->name('redirect');
+   
+    Route::view('/admin', 'pages.admin.dashboard.main');
 });
 
 

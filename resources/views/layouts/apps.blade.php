@@ -12,6 +12,10 @@
 
     <!-- Scripts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+
+     {{-- owl carousel --}}
+     <link rel="stylesheet" href="owlcarousel/owl.carousel.min.css">
+     <link rel="stylesheet" href="owlcarousel/owl.theme.default.min.css">
     
     @vite('resources/css/app.css')
     @livewireStyles
@@ -26,6 +30,11 @@
     <!-- Scripts -->
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+
+     {{-- owl carousel --}}
+     <script src="jquery.min.js"></script>
+     <script src="owlcarousel/owl.carousel.min.js"></script>
+ 
 
     @include('partials.footer')
     @livewireScripts

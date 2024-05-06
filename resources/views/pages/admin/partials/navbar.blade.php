@@ -108,6 +108,7 @@
          @yield('main_content')
          @yield('product_content')
          @yield('user_content')
+         
     </div>
   </div>
   

@@ -3,7 +3,7 @@
 @section('product_content')
 
 
-@livewire('admin.product.index')
+@livewire('admin.product.edit')
 
 
 @endsection
