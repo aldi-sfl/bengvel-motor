@@ -102,9 +102,9 @@
     
               <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
     
-              <p class="mb-6 text-gray-500 dark:text-gray-400">
+              <pre class="mb-6 text-gray-500 dark:text-gray-400 whitespace-pre-wrap overflow-auto">
                 {{ $selectedProduct->description }}
-              </p>
+            </pre>
             </div>
           </div>
         </div>

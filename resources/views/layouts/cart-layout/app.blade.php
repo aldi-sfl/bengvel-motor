@@ -9,9 +9,6 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    
-    {{-- tailwind ui component --}}
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
     <!-- Scripts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
@@ -25,7 +22,7 @@
     {{-- @vite(['resources/css/app.css','resources/js/app.js']) --}}
 </head>
 <body>
-    @include('partials.navbar')
+    @include('layouts.cart-layout.navbar')
     {{-- <div class="container mx-auto px-5 py-4" >
     </div> --}}
     
@@ -39,8 +36,7 @@
      <script src="owlcarousel/owl.carousel.min.js"></script>
  
 
-    @include('partials.footer')
-    @include('partials.speedDial')
+    
     @livewireScripts
 </body>
 </html>

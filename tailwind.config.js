@@ -46,6 +46,7 @@ module.exports = {
             ],
             sans: [
                 "Inter",
+                "Inter var",
                 "ui-sans-serif",
                 "system-ui",
                 "-apple-system",

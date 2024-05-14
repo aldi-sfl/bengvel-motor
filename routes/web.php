@@ -49,21 +49,36 @@ Route::post('/google/addPhone', [SocialController::class, 'addPhone'])->name('go
 
 
 
-
+// admin pages
 Route::view('/produk', 'pages.admin.product');
 Route::view('/preview', 'pages.admin.previewProduct');
 Route::view('/edit', 'pages.admin.updateProduct');
-
 Route::view('/category', 'pages.admin.category');
 Route::view('/user', 'pages.admin.user');
 
+
+
+// user pages
+
+Route::get('/cart', function () {
+    $avatar = session('avatar');
+    return view('pages.user.cart.shoppingCart', compact('avatar'));
+})->name('cart');
 
 Route::get('/shop', function () {
     $avatar = session('avatar');
     return view('pages.user.shop', compact('avatar'));
 })->name('shop');
 
+Route::get('/contact', function () {
+    $avatar = session('avatar');
+    return view('pages.user.contact.index', compact('avatar'));
+})->name('contact');
 
+Route::get('/productInfo', function () {
+    $avatar = session('avatar');
+    return view('pages.user.product.viewProduct', compact('avatar'));
+})->name('productInfo');
     
 Route::middleware('guest')->group(function () {
         

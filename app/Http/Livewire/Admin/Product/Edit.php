@@ -92,6 +92,7 @@ class Edit extends Component
                     // Handle image deletion if images have been marked for deletion
                     if ($imagesToDelete) {
                         $this->handleImageDeletion();
+                        // $this->image = null;
                     }
 
                     $this->BackTo();
@@ -120,5 +121,6 @@ class Edit extends Component
     public function BackTo()
     {
         $this->updateSelectedProduct = null;
+        $this->image = null;
     }
 }

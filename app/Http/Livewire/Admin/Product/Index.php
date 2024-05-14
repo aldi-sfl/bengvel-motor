@@ -49,7 +49,7 @@ class Index extends Component
         $validatedData = $this->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
-            'description' => 'required|string|max:255',
+            'description' => 'required|string',
             'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'category_id' => 'exists:categories,id',
             'stock' => 'required|numeric',
@@ -86,6 +86,8 @@ class Index extends Component
     
         // Reset form fields and fetch updated product and category data
         $this->reset();
+        $this->image = null;
+        $this->dispatchBrowserEvent('clearFileInput');
         $this->products = Product::all();
         $this->categories = Category::all();
         
@@ -219,7 +221,7 @@ class Index extends Component
 
     public function showModalAdd()
     {
-        
+        $this->image = null;   
         $this->showModalAdd = true;
     }
     
@@ -228,6 +230,7 @@ class Index extends Component
     public function closeModalAdd()
     {
         $this->showModalAdd = false;
+        $this->image = null;
     }
    
 
