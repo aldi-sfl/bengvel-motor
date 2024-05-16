@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductInfoController;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Auth;
@@ -62,25 +63,26 @@ Route::view('/user', 'pages.admin.user');
 
 Route::get('/cart', function () {
     $avatar = session('avatar');
-    return view('pages.user.cart.shoppingCart', compact('avatar'));
+    $title = 'Keranjang Belanja - Orbit Motor';
+    return view('pages.user.cart.shoppingCart', compact('avatar','title'));
 })->name('cart');
 
 Route::get('/shop', function () {
     $avatar = session('avatar');
-    return view('pages.user.shop', compact('avatar'));
+    $title = 'Shop - Orbit Motor';
+    return view('pages.user.shop', compact('avatar','title'));
 })->name('shop');
 
 Route::get('/contact', function () {
     $avatar = session('avatar');
-    return view('pages.user.contact.index', compact('avatar'));
+    $title = 'Contact - Orbit Motor';
+    return view('pages.user.contact.index', compact('avatar','title'));
 })->name('contact');
 
-Route::get('/productInfo', function () {
-    $avatar = session('avatar');
-    return view('pages.user.product.viewProduct', compact('avatar'));
-})->name('productInfo');
-    
-Route::middleware('guest')->group(function () {
+Route::get('/shop/product/{name}/{hashedId}', [ProductInfoController::class, 'index']);
+
+
+    Route::middleware('guest')->group(function () {
         
         Route::view('/register', 'main');
         
@@ -105,3 +107,10 @@ Route::middleware('admin')->group(function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+// just testing routes\
+Route::get('/filter', function () {
+    $avatar = session('avatar');
+    return view('pages.user.filter', compact('avatar'));
+})->name('filter');

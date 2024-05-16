@@ -2,19 +2,66 @@
 
 namespace App\Http\Livewire\UserPage\ShopList;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Livewire\Component;
-use App\Models\Cart;
+use App\Models\Category;
 
 class ListProduct extends Component
 {   
-    public $products;
+    // public $products;
+    public $products = [];
+    public $categories = [];
+    public $searchTerm = '';
+    public $readyToLoad = false;
     public $selectedProduct;
+
+    public function loadProduct()
+    {
+        $this->readyToLoad = true;
+    }
+    public function updatedCategories()
+    {
+        $this->search();
+    }
     
+        // old render without filter
+    // public function search()
+    // {
+    //     $this->products = Product::when($this->searchTerm, function ($query) {
+    //         $query->where('name', 'like', '%'.$this->searchTerm.'%')
+    //               ->orWhere('description', 'like', '%'.$this->searchTerm.'%');
+    //     })->get();
+    // }
+
+    // public function render()
+    // {
+    //     $this->search(); // Ensure products are loaded initially
+    //     return view('livewire.user-page.shop-list.list-product', [
+    //         'products' => $this->readyToLoad ? product::all()
+    //         : [],
+    //     ]);
+    // }
+        // ==============
+        
+    public function search()
+    {
+        $this->products = Product::when($this->searchTerm, function ($query) {
+            $query->where('name', 'like', '%'.$this->searchTerm.'%')
+                  ->orWhere('description', 'like', '%'.$this->searchTerm.'%');
+        })->when($this->categories, function ($query) {
+            $query->whereIn('category_id', $this->categories);
+        })->get();
+    }
+
     public function render()
     {
-        $this->products = Product::get();
-        return view('livewire.user-page.shop-list.list-product');
+        $this->search(); // Ensure products are loaded initially
+
+        return view('livewire.user-page.shop-list.list-product', [
+            'products' => $this->readyToLoad ? $this->products : [],
+            'allCategories' => Category::all(),
+        ]);
     }
 
     public function addToCart($id){

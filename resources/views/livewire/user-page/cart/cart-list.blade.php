@@ -29,7 +29,7 @@
                           <input wire:model="selected_cart_items" id="cart_check_{{ $item->id }}" type="checkbox" value="{{ $item->id }}" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                       </div>
                         <!-- Product image -->
-                          <a href="#" class="shrink-0 md:order-1">
+                          <a href="{{ url('/shop/product/' . $item->product->name . '/' . $item->product->hashed_id) }}" class="shrink-0 md:order-1">
                             @if($item->product->images->first())
                                 <img  class="h-20 w-20 dark:hidden object-cover" src="{{ asset('storage/' . $item->product->images->first()->image_url) }}" alt="image not found" title="{{ $item->name }}">
                             @endif
@@ -88,7 +88,7 @@
             <div class="mt-6 grid grid-cols-3 gap-4 sm:mt-8">
               @foreach ($products as $anotherItem)  
               <div class="mx-auto space-y-4 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                <a href="#" class="overflow-hidden rounded">
+                <a href="{{ url('/shop/product/' . $anotherItem->name . '/' . $anotherItem->hashed_id) }}" class="overflow-hidden rounded">
                   {{-- <img class="mx-auto h-44 w-44 dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="imac image" /> --}}
                   @if($anotherItem->images->first())
                   {{-- <img  class="mx-auto h-44 w-44 dark:hidden" src="{{ asset('storage/' . $anotherItem->images->first()->image_url) }}" alt="image not found" title="{{ $anotherItem->name }}"> --}}
@@ -98,7 +98,7 @@
                   @endif
                 </a>
                 <div>
-                  <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ $anotherItem->name }}</a>
+                  <a href="{{ url('/shop/product/' . $anotherItem->name . '/' . $anotherItem->hashed_id) }}" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ $anotherItem->name }}</a>
                 </div>
                 <div>
                   <p class="text-lg font-bold text-gray-900 dark:text-white">
@@ -131,22 +131,6 @@
                   <dd class="text-base font-medium text-gray-900 dark:text-white">{{ 'Rp' . number_format($sub_total, 0, ',', '.') }}</dd>
                 </dl>
   
-                {{-- <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Savings</dt>
-                  <dd class="text-base font-medium text-green-600">-$299.00</dd>
-                </dl>
-  
-                <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Store Pickup</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">$99</dd>
-                </dl>
-  
-                <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Tax</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">$799</dd>
-                </dl>
-              </div> --}}
-  
               <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
                 <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
                 <dd class="text-base font-bold text-gray-900 dark:text-white">{{ 'Rp' . number_format($this->total, 0, ',', '.') }}</dd>
@@ -165,16 +149,7 @@
               </a>
             </div>
           </div>
-  
-          {{-- <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
-            <form class="space-y-4">
-              <div>
-                <label for="voucher" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Do you have a voucher or gift card? </label>
-                <input type="text" id="voucher" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="" required />
-              </div>
-              <button type="submit" class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Apply Code</button>
-            </form>
-          </div> --}}
+
 
         </div>
     </div>

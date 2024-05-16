@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\UserPage\Cart;
 
+
 use App\Models\Cart;
 use App\Models\Product;
 use Livewire\Component;
@@ -56,6 +57,8 @@ class CartList extends Component
     // anotherItem is exclude from cart 
     public function render()
     {
+
+
         // Get all cart items for the current user
         $this->cartitems = Cart::with('product')
             ->where(['user_id' => auth()->user()->id])
@@ -232,7 +235,6 @@ class CartList extends Component
             return redirect(route('login'));
         }
     }
-
 
 
     
