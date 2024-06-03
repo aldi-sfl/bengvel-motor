@@ -27,9 +27,10 @@ class Edit extends Component
         'updateSelectedProduct.name' => 'required|string|max:255',
         'updateSelectedProduct.stock' => 'required|numeric|min:0',
         'updateSelectedProduct.price' => 'required|numeric',
+        'updateSelectedProduct.weight' => 'required|numeric',
         'updateSelectedProduct.description' => 'required|string|max:5000',
         'updateSelectedProduct.category_id' => 'required|exists:categories,id',
-        'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
+        'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10048', 
         // Add other fields as necessary
     ];  
 
@@ -74,6 +75,7 @@ class Edit extends Component
                 $product->name = $this->updateSelectedProduct->name;
                 $product->stock = $this->updateSelectedProduct->stock;
                 $product->price = $this->updateSelectedProduct->price;
+                $product->weight = $this->updateSelectedProduct->weight;
                 $product->description = $this->updateSelectedProduct->description;
                 $product->category_id = $this->updateSelectedProduct->category_id;
 

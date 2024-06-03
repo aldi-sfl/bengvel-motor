@@ -16,10 +16,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('code_invoice');
-            $table->string('grand_total');
-            $table->string('nominal')->nullable();
-            $table->string('transaction_note')->nullable();
+            $table->decimal('total_amount', 15, 2);
             $table->string('transaction_status');
             $table->string('method_payment')->nullable();
             $table->timestamps();

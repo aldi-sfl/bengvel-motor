@@ -17,7 +17,7 @@ class Index extends Component
     protected $products;
     public $searchTerm = '';
     public  $category_id, $categories, $selectedProduct, $updateSelectedProduct;
-    public $image,$name, $price, $description,  $stock;
+    public $image,$name, $price, $description,  $stock, $weight;
     // public $images,$name, $price, $description,  $stock =[] ;
     
 
@@ -49,6 +49,7 @@ class Index extends Component
         $validatedData = $this->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
+            'weight' => 'required|numeric',
             'description' => 'required|string',
             'image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'category_id' => 'exists:categories,id',
@@ -59,6 +60,7 @@ class Index extends Component
         $product = Product::create([
             'name' => $validatedData['name'],
             'price' => $validatedData['price'],
+            'weight' => $validatedData['weight'],
             'description' => $validatedData['description'],
             'category_id' => $validatedData['category_id'],
             'stock' => $validatedData['stock'],

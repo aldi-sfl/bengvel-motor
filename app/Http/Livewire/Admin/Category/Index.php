@@ -60,7 +60,7 @@ class Index extends Component
         // $this->emit('categoryCreated');
         // session()->flash('message', 'Category created successfully!');
         toastr()->success('Data has been saved successfully!', 'Congrats',['timeOut' => 3500]);
-    
+
     }
 
     // public function edit($id)

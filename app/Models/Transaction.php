@@ -13,8 +13,9 @@ class Transaction extends Model
     protected $casts = [
         'product' => 'array'
     ];
+    protected $fillable = ['user_id', 'total_amount', 'transaction_status', 'method_payment'];
 
-    public function transaction_details()
+    public function transactionDetails()
     {
         return $this->hasMany(TransactionDetail::class);
     }

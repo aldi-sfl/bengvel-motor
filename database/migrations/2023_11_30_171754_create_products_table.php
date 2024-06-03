@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image')->nullable();
             $table->integer('price');
+            $table->integer('weight');
             $table->integer('stock');
             $table->string('status')->default(1);
 

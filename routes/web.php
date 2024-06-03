@@ -1,16 +1,16 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductInfoController;
-use App\Http\Livewire\Auth\Login;
-use App\Http\Livewire\Auth\Register;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Controllers\SocialController;
 use App\Http\Livewire\Admin\Product\Preview;
-
-
-
+use App\Http\Livewire\Auth\Login;
+use App\Http\Livewire\Auth\Register;
+use App\Http\Livewire\UserPage\Transaction\CheckOngkir;
+use App\Http\Livewire\UserPage\Transaction\Checkout;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,22 +50,9 @@ Route::post('/google/addPhone', [SocialController::class, 'addPhone'])->name('go
 
 
 
-// admin pages
-Route::view('/produk', 'pages.admin.product');
-Route::view('/preview', 'pages.admin.previewProduct');
-Route::view('/edit', 'pages.admin.updateProduct');
-Route::view('/category', 'pages.admin.category');
-Route::view('/user', 'pages.admin.user');
-
 
 
 // user pages
-
-Route::get('/cart', function () {
-    $avatar = session('avatar');
-    $title = 'Keranjang Belanja - Orbit Motor';
-    return view('pages.user.cart.shoppingCart', compact('avatar','title'));
-})->name('cart');
 
 Route::get('/shop', function () {
     $avatar = session('avatar');
@@ -81,8 +68,17 @@ Route::get('/contact', function () {
 
 Route::get('/shop/product/{name}/{hashedId}', [ProductInfoController::class, 'index']);
 
+// checkout
+// regular controller
+// Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->name('checkout.show');
+
+// livewire component
+Route::get('/checkout/{id}', Checkout::class)->name('checkout.show');
+
+// Route::post('/checkout/{id}', [CheckoutController::class, 'OngkirCheck']);
 
     Route::middleware('guest')->group(function () {
+        
         
         Route::view('/register', 'main');
         
@@ -94,13 +90,27 @@ Route::get('/shop/product/{name}/{hashedId}', [ProductInfoController::class, 'in
 
 Route::middleware('auth')->group(function () {
 //    Route::get('/', SocialController::class)->name('redirect');
-   
+    
+    Route::get('/cart', function () {
+        $avatar = session('avatar');
+        $title = 'Keranjang Belanja - Orbit Motor';
+        return view('pages.user.cart.shoppingCart', compact('avatar','title'));
+    })->name('cart');
+
       
 });
+
 Route::middleware('admin')->group(function () {
 //    Route::get('/', SocialController::class)->name('redirect');
    
     Route::view('/admin', 'pages.admin.dashboard.main');
+    
+    // admin pages
+    Route::view('/produk', 'pages.admin.product');
+    // Route::view('/preview', 'pages.admin.previewProduc 
+    Route::view('/category', 'pages.admin.category');
+    Route::view('/user', 'pages.admin.user');
+
 });
 
 
@@ -110,7 +120,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 // just testing routes\
-Route::get('/filter', function () {
+Route::get('/checkout', function () {
     $avatar = session('avatar');
-    return view('pages.user.filter', compact('avatar'));
-})->name('filter');
+    $title = 'checkout - Orbit Motor';
+    $heading = 'Checkout';
+    return view('pages.user.transaction.checkout', compact('avatar','title','heading'));
+})->name('checkout');

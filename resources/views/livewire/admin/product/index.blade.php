@@ -421,13 +421,18 @@
                             </div>
                             <div class="w-full">
                                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                <input wire:model="price" type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" >
+                                <input wire:model="price" type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="harga barang" >
                                 @error('price') <p class="mt-2 text-xs text-red-600 dark:text-red-400"><span class="font-medium">Error.</span> {{ $message }}</p>  @enderror
                             </div>
                             <div class="w-full">
-                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">stock</label>
-                                <input wire:model="stock" type="number" name="stock" id="stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" >
+                                <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">stock</label>
+                                <input wire:model="stock" type="number" name="stock" id="stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="stok barang" >
                                 @error('stock') <p class="mt-2 text-xs text-red-600 dark:text-red-400"><span class="font-medium">Error.</span> {{ $message }}</p>  @enderror
+                            </div>
+                            <div class="w-full">
+                                <label for="weight" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">weight</label>
+                                <input wire:model="weight" type="number" name="weight" id="weight" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="berat(gram)" >
+                                @error('weight') <p class="mt-2 text-xs text-red-600 dark:text-red-400"><span class="font-medium">Error.</span> {{ $message }}</p>  @enderror
                             </div>
                             <div>
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>

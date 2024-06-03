@@ -37,7 +37,6 @@
      {{-- owl carousel --}}
      <script src="jquery.min.js"></script>
      <script src="owlcarousel/owl.carousel.min.js"></script>
- 
 
     @include('partials.footer')
     @include('partials.speedDial')

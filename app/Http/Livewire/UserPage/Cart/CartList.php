@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use Illuminate\Support\Str;
 use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class CartList extends Component
 {
@@ -62,8 +63,8 @@ class CartList extends Component
         // Get all cart items for the current user
         $this->cartitems = Cart::with('product')
             ->where(['user_id' => auth()->user()->id])
-            ->where('status', '!=', Cart::STATUS['success'])
             ->get();
+            // ->where('status', '!=', Cart::STATUS['success'])
 
         // Extract product IDs from cart items
         $cartProductIds = $this->cartitems->pluck('product_id')->toArray();
@@ -75,7 +76,6 @@ class CartList extends Component
             ->get();
 
         // Calculate total and other cart related data
-        
         $selectedCartItems = $this->cartitems->filter(function ($item) {
             return in_array($item->id, $this->selected_cart_items);
         });
@@ -90,73 +90,123 @@ class CartList extends Component
         return view('livewire.user-page.cart.cart-list');
     }
 
-
-    public function checkout(){
-        if (empty($this->selected_cart_items)) {
+    // old component
+    // public function checkout(){
+    //     if (empty($this->selected_cart_items)) {
             
+    //         return;
+    //     }
+    //     // $validatedData = $this->validate();
+
+    //     try { 
+    //         DB::beginTransaction();
+           
+    //         $selectedCartItems = $this->cartitems->filter(function ($item) {
+    //             return in_array($item->id, $this->selected_cart_items);
+    //         });
+    
+    //         $this->total = 0;
+    //         $this->sub_total = 0;
+    //         $this->tax = 0;
+    //         foreach ($selectedCartItems as $item) {
+    //             $this->sub_total += $item->product->price * $item->quantity;
+    //         }
+        
+    //         $uuid = Str::uuid();
+
+    //         $transaction = Transaction::create([
+    //             'user_id' => auth()->user()->id,
+    //             'code_invoice' => $uuid,
+    //             'grand_total' => $this->sub_total,
+    //             'transaction_status' => 'pending',
+    //             'method_payment' => $this->payment_method,
+    //         ]);
+            
+
+    //         // useless
+    //         // $this->emit('codeInvoiceGenerated', $uuid);
+
+           
+    //         foreach ($selectedCartItems as $cart) {
+    //             $product = $cart->product;
+    //             TransactionDetail::create([
+    //                 'transaction_id' => $transaction->id,
+    //                 'product' => $product->id,
+    //                 'product_id' => $product->id,
+    //                 'qty' => $cart->quantity,
+    //                 'price' => $product->price,
+    //             ]);
+
+    //             $current_stock = $product->stock - $cart->quantity;
+    //             $product->update([
+    //                 'stock' => $current_stock,
+    //             ]);
+
+    //             $cart->delete();
+    //         }
+
+
+    //         DB::commit();
+    //         $this->emit('updateCartCount');
+    //         toastr()->success('Checkout berhasil!', 'success', ['timeOut' => 3500]);
+    //         // return redirect('/transaction');
+    //         // return redirect('/transaction')->with('success', 'Checkout success!');
+
+    //     } catch (\Exception $e) {
+    //         DB::rollback();
+
+    //         session()->flash('error', 'Checkout gagal: ' . $e->getMessage());
+    //     }
+    // }
+
+    function checkout()
+    {
+        $userId = auth()->id();
+        $selectedCartItems = $this->cartitems->filter(function ($item) {
+            return in_array($item->id, $this->selected_cart_items);
+        });
+
+        if ($selectedCartItems->isEmpty()) {
+            session()->flash('message', 'No items selected for checkout.');
             return;
         }
-        $validatedData = $this->validate();
+
+        $totalAmount = $selectedCartItems->sum(function($cartItem) {
+            return $cartItem->product->price * $cartItem->quantity;
+        });
+
+        DB::beginTransaction();
 
         try {
-            DB::beginTransaction();
-           
-            $selectedCartItems = $this->cartitems->filter(function ($item) {
-                return in_array($item->id, $this->selected_cart_items);
-            });
-    
-            $this->total = 0;
-            $this->sub_total = 0;
-            $this->tax = 0;
-            foreach ($selectedCartItems as $item) {
-                $this->sub_total += $item->product->price * $item->quantity;
-            }
-        
-            $uuid = Str::uuid();
-
             $transaction = Transaction::create([
-                'user_id' => auth()->user()->id,
-                'code_invoice' => $uuid,
-                'grand_total' => $this->sub_total,
+                'user_id' => $userId,
+                'total_amount' => $totalAmount,
                 'transaction_status' => 'pending',
-                'method_payment' => $this->payment_method,
+                'method_payment' => null,
             ]);
-            
 
-            // useless
-            // $this->emit('codeInvoiceGenerated', $uuid);
-
-           
-            foreach ($selectedCartItems as $cart) {
-                $product = $cart->product;
+            foreach ($selectedCartItems as $cartItem) {
                 TransactionDetail::create([
                     'transaction_id' => $transaction->id,
-                    'product' => $product->id,
-                    'product_id' => $product->id,
-                    'qty' => $cart->quantity,
-                    'price' => $product->price,
+                    'product_id' => $cartItem->product_id,
+                    'quantity' => $cartItem->quantity,
+                    'price' => $cartItem->product->price,
                 ]);
 
-                $current_stock = $product->stock - $cart->quantity;
-                $product->update([
-                    'stock' => $current_stock,
-                ]);
-
-                $cart->delete();
+                // $product = Product::find($cartItem->product_id);
+                // $product->decrement('stock', $cartItem->quantity);
             }
 
-
+            // Cart::where('user_id', $userId)->whereIn('id', $this->selected_cart_items)->delete();
+            Session::put('selected_cart_items', $this->selected_cart_items);
             DB::commit();
-            $this->emit('updateCartCount');
-            session()->flash('success', 'Checkout berhasil!');
-            return redirect('/transaction');
-            // return redirect('/transaction')->with('success', 'Checkout success!');
-
+            toastr()->success('Transaction completed successfully.', 'Congrats', ['timeOut' => 3500]);
+            return redirect()->route('checkout.show', ['id' => $transaction->id]);
         } catch (\Exception $e) {
             DB::rollback();
-
-            session()->flash('error', 'Checkout gagal: ' . $e->getMessage());
+            session()->flash('message', 'Transaction failed: ' . $e->getMessage());
         }
+    
     }
     
     public function checkAllItems()

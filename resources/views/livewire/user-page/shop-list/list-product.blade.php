@@ -13,8 +13,6 @@
             <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
         </div>
     </form>
-    
-    
    
     {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 p-4">
         
@@ -60,7 +58,7 @@
             <li>
                 <div class="flex items-center mb-4">
                     <input id="category-{{ $category->id }}" type="checkbox" value="{{ $category->id }}" wire:model="categories" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <label for="category-{{ $category->id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->name }}</label>
+                    <label for="category-{{ $category->id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->category_name }}</label>
                 </div>
             </li>
             @endforeach
@@ -86,8 +84,8 @@
                             @foreach ($allCategories as $category)
                             <li>
                                 <div class="flex items-center mb-4">
-                                    <input id="category-{{ $category->id }}" type="checkbox" value="{{ $category->id }}" wire:model="categories" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="category-{{ $category->id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->category_name }}</label>
+                                    <input id="category-{{ $category->id }}" type="checkbox" value="{{ $category->id }}" wire:model="categories" class="w-4 h-4 hover:cursor-pointer text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="category-{{ $category->id }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 hover:cursor-pointer">{{ $category->category_name }}</label>
                                 </div>
                             </li>
                             @endforeach
@@ -121,9 +119,10 @@
                             <div class="flex items-center m-2"></div>
                             <div class="flex items-center justify-between">
                                 <span class="text-xl font-bold text-gray-900 dark:text-white">{{ 'Rp' . number_format($item->price, 0, ',', '.') }}</span>
-                                <a href="#" wire:click="addToCart({{ $item->id }})" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="button" wire:click="addToCart({{ $item->id }})" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Add to cart
-                                </a>
+                                </button>
+                                
                             </div>
                         </div>
                     </div>

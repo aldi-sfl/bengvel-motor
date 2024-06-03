@@ -12,13 +12,13 @@ class Cart extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    const STATUS  = [
-        'pending'       => 0,
-        'in_process'    => 1,
-        'success'       => 2,
-        'error'         => 3
+    // const STATUS  = [
+    //     'pending'       => 0,
+    //     'in_process'    => 1,
+    //     'success'       => 2,
+    //     'error'         => 3
 
-    ];
+    // ];
 
     public function getHashedIdAttribute()
     {

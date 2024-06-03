@@ -18,7 +18,7 @@ class CartCounter extends Component
 
     public function getCartItemCount(){
         $this->total = Cart::whereUserId(auth()->user()->id)
-            ->where('status', '!=', Cart::STATUS['success'])
+            // ->where('status', '!=', Cart::STATUS['success'])
             ->count();
     }
 }

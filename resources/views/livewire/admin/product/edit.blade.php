@@ -32,21 +32,31 @@
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
                         <input type="text" wire:model="updateSelectedProduct.name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                          value="{{-- {{ $updateSelectedProduct->name }} --}}" placeholder="Type product name" required="" autofocus>
+                         @error('updateSelectedProduct.name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                    
                     <div class="w-full">
-                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
-                        <input type="number" wire:model="updateSelectedProduct.stock" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
+                        <input type="number" wire:model="updateSelectedProduct.stock" name="stock" id="stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                          {{-- value="{{ $updateSelectedProduct->stock }}" --}} placeholder="$299" required="">
+                         @error('updateSelectedProduct.stock') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                     <div class="w-full">
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
                         <input type="number" wire:model="updateSelectedProduct.price" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                          {{-- value="{{ $updateSelectedProduct->price }}" --}} placeholder="$299" required="">
+                         @error('updateSelectedProduct.price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="w-full">
+                        <label for="weight" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">weight</label>
+                        <input type="number" wire:model="updateSelectedProduct.weight" name="weight" id="weight" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                         {{-- value="{{ $updateSelectedProduct->weight }}" --}} placeholder="berat(gram)" required="">
+                         @error('updateSelectedProduct.weight') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                     <div class="w-full">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="multiple_files">Upload multiple files</label>
                         <input wire:model="image"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" multiple>
+                        @error('image.*') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
@@ -55,7 +65,7 @@
                                 <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                             @endforeach
                         </select>
-                        
+                        @error('updateSelectedProduct.category_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                     
                     <div class="sm:col-span-2">
@@ -83,6 +93,7 @@
                     <div class="sm:col-span-2">
                         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                         <textarea id="description" wire:model="updateSelectedProduct.description" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write a product description here...">{{-- {{ $updateSelectedProduct->description }} --}}</textarea>
+                        @error('updateSelectedProduct.description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">

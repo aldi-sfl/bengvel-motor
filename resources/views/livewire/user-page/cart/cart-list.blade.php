@@ -1,7 +1,23 @@
 <div>
     {{-- Do your work, then step back. --}}
     
+    
     <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+
+      @if (session()->has('error'))
+      <div id="alert-3" class="flex p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+        <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <span class="sr-only">Info</span>
+        <div class="ml-3 text-sm font-medium">
+          {{ session('error') }}
+        </div>
+        <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" onclick="closeAlert(event)" aria-label="Close">
+          <span class="sr-only">Close</span>
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+      </div>
+      @endif 
+      
         <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
           <div class="space-y-6">
             {{-- list cart --}}
@@ -26,16 +42,15 @@
                       <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">  
                         <!-- Product checkbox -->
                         <div class="flex items-center md:order-1 p-2">
-                          <input wire:model="selected_cart_items" id="cart_check_{{ $item->id }}" type="checkbox" value="{{ $item->id }}" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                      </div>
+                          <input wire:model="selected_cart_items" id="cart_check_{{ $item->id }}" type="checkbox" value="{{ $item->id }}" class="h-4 w-4 mr-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                      
                         <!-- Product image -->
                           <a href="{{ url('/shop/product/' . $item->product->name . '/' . $item->product->hashed_id) }}" class="shrink-0 md:order-1">
                             @if($item->product->images->first())
                                 <img  class="h-20 w-20 dark:hidden object-cover" src="{{ asset('storage/' . $item->product->images->first()->image_url) }}" alt="image not found" title="{{ $item->name }}">
                             @endif
-                              {{-- <img class="h-20 w-20 dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="imac image" />
-                              <img class="hidden h-20 w-20 dark:block" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg" alt="imac image" /> --}}
-                          </a>                                
+                          </a>  
+                        </div>                              
                           <!-- Quantity and price controls -->
                           <div class="flex items-center justify-between md:order-4 md:justify-end">
                               <div class="flex items-center">
@@ -63,7 +78,7 @@
                           <!-- Product description and actions -->
                           <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                               <!-- Product link -->
-                              <a href="#" class="text-base font-medium text-gray-900 hover:underline dark:text-white">{{ $item->product->name }}</a>
+                              <a href="{{ url('/shop/product/' . $item->product->name . '/' . $item->product->hashed_id) }}" class="text-base font-medium text-gray-900 hover:underline dark:text-white">{{ $item->product->name }}</a>
                               <!-- Action buttons -->
                               <div class="flex items-center gap-4">
                                   <!-- Remove button -->
@@ -119,7 +134,8 @@
             </div>
           </div>
         </div>
-  
+        
+        {{-- checkout --}}
         <div class="sticky top-16 mx-auto mt-10 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
           <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
             <p class="text-xl font-semibold text-gray-900 dark:text-white">Order summary</p>
@@ -137,8 +153,19 @@
               </dl>
             </div>
   
-            <a href="#" class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Proceed to Checkout</a>
-  
+            <button wire:click="checkout" type="submit"
+              @if (empty($selected_cart_items)) 
+              disabled class="cursor-not-allowed flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              @endif
+                class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                Checkout
+            </button>
+            @if (session()->has('message'))
+                <div>{{ session('message') }}</div>
+            @endif
+              @if (empty($selected_cart_items))
+                <p id="filled_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400"><span class="font-medium">Silahkan pilih produk yang ingin di beli</span></p>
+              @endif
             <div class="flex items-center justify-center gap-2">
               <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
               <a href="/shop" title="" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
@@ -149,8 +176,6 @@
               </a>
             </div>
           </div>
-
-
         </div>
     </div>
       
