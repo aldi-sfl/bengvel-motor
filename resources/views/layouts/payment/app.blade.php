@@ -22,8 +22,7 @@
     {{-- @vite(['resources/css/app.css','resources/js/app.js']) --}}
 </head>
 <body>
-    @include('layouts.cart-layout.navbar')
-    
+    @include('layouts.payment.navbar')
     {{-- <div class="container mx-auto px-5 py-4" >
     </div> --}}
     

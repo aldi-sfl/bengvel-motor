@@ -69,7 +69,6 @@
                     </li>
                 </ul>
                 
-                
                 @if ($shippingMethod == 'kirim-paket')                
                     <div class="w-1/2 mx-auto">
                         <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">masukan alamat lengkap</label>

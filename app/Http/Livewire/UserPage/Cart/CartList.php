@@ -187,7 +187,8 @@ class CartList extends Component
 
             foreach ($selectedCartItems as $cartItem) {
                 TransactionDetail::create([
-                    'transaction_id' => $transaction->id,
+                    // 'transaction_id' => $transaction->id,
+                    'transaction_id' => $transaction->transaction_id,
                     'product_id' => $cartItem->product_id,
                     'quantity' => $cartItem->quantity,
                     'price' => $cartItem->product->price,

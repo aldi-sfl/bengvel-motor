@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('transaction_detail_id')->constrained()->onDelete('cascade');
             $table->string('shipping_method');
             $table->string('address')->nullable();
+            $table->string('courier_provider')->nullable();
             $table->string('couries_service')->nullable();
             $table->string('servicce_price')->nullable();
             $table->timestamps();

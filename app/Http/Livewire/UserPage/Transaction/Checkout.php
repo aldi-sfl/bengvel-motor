@@ -39,10 +39,14 @@ class Checkout extends Component
     public $selectedShippingPrice;
     public $selectedProvinceName;
     public $selectedCityName;
+    public $avatar;
+
+    
 
 
     public function mount($id)
     {
+        $this->avatar = session('avatar');
         $this->transaction = Transaction::with('transactionDetails.product')->findOrFail($id);
         foreach ($this->transaction->transactionDetails as $detail) {
             $this->total += $detail->price * $detail->quantity;
@@ -71,8 +75,11 @@ class Checkout extends Component
     
     public function render()
     {
+        
         return view('livewire.user-page.transaction.checkout')
-                ->extends('layouts.cart-layout.app')
+                ->extends('layouts.cart-layout.app',[
+                    'avatar' => $this->avatar
+                ])
                 ->section('content');
     }
 
@@ -186,9 +193,10 @@ class Checkout extends Component
         ]);
 
         $this->costResult = $responseCost->json();
+        // dd($this->costResult);
         toastr()->success('Data has been saved successfully!');
         return;
-        // dd($this->costResult);
+        
     }
 
     
@@ -254,6 +262,7 @@ class Checkout extends Component
             'address' => 'required_if:shippingMethod,kirim-paket',
             'shippingMethod' => 'required',
             'payment_method' => 'required|string',
+            'courier' => 'required_if:shippingMethod,kirim-paket',
             'selectedShippingService' => 'required_if:shippingMethod,kirim-paket',
             'selectedShippingPrice' => 'required_if:shippingMethod,kirim-paket',
         ]);
@@ -273,6 +282,7 @@ class Checkout extends Component
                 'transaction_detail_id' => $transactionDetail->id,
                 'shipping_method' => $this->shippingMethod,
                 'address' => $this->shippingMethod == 'kirim-paket' ? $formattedAddress : null,
+                'courier_provider' => $this->courier,
                 'couries_service' => $this->selectedShippingService,
                 'servicce_price' => $this->selectedShippingPrice,
             ]);

@@ -1,16 +1,19 @@
 <?php
 
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\ProductInfoController;
-use App\Http\Controllers\SocialController;
-use App\Http\Livewire\Admin\Product\Preview;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Register;
-use App\Http\Livewire\UserPage\Transaction\CheckOngkir;
-use App\Http\Livewire\UserPage\Transaction\Checkout;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Auth\Events\PasswordReset;
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\paymentController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Livewire\Admin\Product\Preview;
+use App\Http\Controllers\ListOrderController;
+use App\Http\Controllers\ProductInfoController;
+use App\Http\Livewire\UserPage\Transaction\Checkout;
+use App\Http\Livewire\UserPage\Transaction\CheckOngkir;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,8 +78,6 @@ Route::get('/shop/product/{name}/{hashedId}', [ProductInfoController::class, 'in
 // livewire component
 Route::get('/checkout/{id}', Checkout::class)->name('checkout.show');
 
-// Route::post('/checkout/{id}', [CheckoutController::class, 'OngkirCheck']);
-
     Route::middleware('guest')->group(function () {
         
         
@@ -97,7 +98,10 @@ Route::middleware('auth')->group(function () {
         return view('pages.user.cart.shoppingCart', compact('avatar','title'));
     })->name('cart');
 
-      
+    
+    Route::get('/payment/{id}', [paymentController::class, 'index'])->name('payment');
+    Route::get('/myOrder', [ListOrderController::class, 'index'])->name('myOrder');
+
 });
 
 Route::middleware('admin')->group(function () {
@@ -120,9 +124,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 // just testing routes\
-Route::get('/checkout', function () {
-    $avatar = session('avatar');
-    $title = 'checkout - Orbit Motor';
-    $heading = 'Checkout';
-    return view('pages.user.transaction.checkout', compact('avatar','title','heading'));
-})->name('checkout');
+

@@ -7,7 +7,7 @@
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
             <div class="relative">
                 <div class="absolute h-8 bg-gray-400 w-0.5"></div>
-                @if (request()->is('checkout'))
+                @if (request()->is('/checkout/{id}'))
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white pl-3">{{ $heading }}</span>
                 @else
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white pl-3">keranjang belanja</span>

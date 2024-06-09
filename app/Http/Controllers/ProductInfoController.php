@@ -18,12 +18,14 @@ class ProductInfoController extends Controller
         }
 
         $title = $product->name . ' - Orbit Motor';
-
+        $avatar = session('avatar');
         return view('pages.User.product.viewProduct', [
             'product' => $product,
             'categories' => Category::all(),
-            'title' => $title
+            'title' => $title,
+            'avatar' => $avatar
         ]);
     }
     
 }
+    
