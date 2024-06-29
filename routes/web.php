@@ -7,11 +7,16 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Controllers\SocialController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\paymentController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Livewire\Admin\Product\Preview;
 use App\Http\Controllers\ListOrderController;
+use App\Http\Controllers\Payment_MethodController;
 use App\Http\Controllers\ProductInfoController;
+use App\Http\Controllers\TransactionAdminController;
+use App\Http\Controllers\UserAdminController;
 use App\Http\Livewire\UserPage\Transaction\Checkout;
 use App\Http\Livewire\UserPage\Transaction\CheckOngkir;
 
@@ -51,10 +56,6 @@ Route::get('/google.redirect', [SocialController::class, 'googleCallback'])->nam
 Route::post('/google/addPhone', [SocialController::class, 'addPhone'])->name('google.addPhone');
 
 
-
-
-
-
 // user pages
 
 Route::get('/shop', function () {
@@ -75,10 +76,7 @@ Route::get('/shop/product/{name}/{hashedId}', [ProductInfoController::class, 'in
 // regular controller
 // Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->name('checkout.show');
 
-// livewire component
-Route::get('/checkout/{id}', Checkout::class)->name('checkout.show');
-
-    Route::middleware('guest')->group(function () {
+Route::middleware('guest')->group(function () {
         
         
         Route::view('/register', 'main');
@@ -91,6 +89,9 @@ Route::get('/checkout/{id}', Checkout::class)->name('checkout.show');
 
 Route::middleware('auth')->group(function () {
 //    Route::get('/', SocialController::class)->name('redirect');
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/updateProfile', [ProfileController::class, 'updateProfile'])->name('profileUpdate');
     
     Route::get('/cart', function () {
         $avatar = session('avatar');
@@ -99,22 +100,38 @@ Route::middleware('auth')->group(function () {
     })->name('cart');
 
     
+    // livewire component
+    Route::get('/checkout/{id}', Checkout::class)->name('checkout.show');
+
+    
     Route::get('/payment/{id}', [paymentController::class, 'index'])->name('payment');
     Route::get('/myOrder', [ListOrderController::class, 'index'])->name('myOrder');
 
+    Route::get('/invoice/download/{id}', [InvoiceController::class, 'view_pdf'])->name('download.invoice');
+    Route::get('/invoice/{id}', [InvoiceController::class,  'index'])->name('invoice');
 });
 
 Route::middleware('admin')->group(function () {
 //    Route::get('/', SocialController::class)->name('redirect');
    
-    Route::view('/admin', 'pages.admin.dashboard.main');
+    Route::view('/admin', 'pages.admin.dashboard.main')->name('admin');
     
     // admin pages
-    Route::view('/produk', 'pages.admin.product');
-    // Route::view('/preview', 'pages.admin.previewProduc 
-    Route::view('/category', 'pages.admin.category');
-    Route::view('/user', 'pages.admin.user');
-
+    Route::view('/admin/produk', 'pages.admin.product')->name('produk'); 
+    Route::view('/admin/category', 'pages.admin.category')->name('category');
+    // Route::view('/admin/transaction', 'pages.admin.transactionAdmin')->name('transaction');
+    // Route::view('/admin/user', 'pages.admin.user')->name('user');
+    
+    // Route::view('/payment-method', 'pages.admin.payment_method');
+    
+    Route::get('/admin/transaction', [TransactionAdminController::class, 'index'])->name('transaction');
+    Route::put('/admin/transactions/{id}/status', [TransactionAdminController::class, 'changeStatus'])->name('transaction.changeStatus');
+    Route::get('/admin/users', [UserAdminController::class, 'index'])->name('user-admin');
+    Route::get('/admin/list-payment', [Payment_MethodController::class, 'index'])->name('list-payment');
+    Route::post('/admin/list-payment', [Payment_MethodController::class, 'store'])->name('list-payment.store');
+    Route::get('/admin/list-payment/edit/{id}', [Payment_MethodController::class, 'edit'])->name('payment-methods.edit');
+    Route::post('/admin/list-payment/update/{id}', [Payment_MethodController::class, 'update'])->name('payment-methods.update');
+    Route::post('/admin/list-payment/delete/{id}', [Payment_MethodController::class, 'destroy'])->name('payment-methods.destroy');
 });
 
 
@@ -124,4 +141,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 // just testing routes\
+// Route::get('/download', [ListOrderController::class, 'view_pdf'])->name('download');
+
+// Route::get('/myOrder/detail/{id}', [ListOrderController::class, 'view_pdf'])->name('details');
+
+// Route::get('/myOrder/view/{id}', [InvoiceController::class, 'index'])->name('view');
 

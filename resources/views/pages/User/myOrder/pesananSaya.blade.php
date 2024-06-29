@@ -21,33 +21,37 @@
       
                 <span class="inline-block text-gray-500 dark:text-gray-400"> from </span>
       
-                <div>
-                  <label for="duration" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select duration</label>
-                  <select id="duration" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                    <option selected>this week</option>
-                    <option value="this month">this month</option>
-                    <option value="last 3 months">the last 3 months</option>
-                    <option value="lats 6 months">the last 6 months</option>
-                    <option value="this year">this year</option>
-                  </select>
+                <div class="filters mb-4">
+                    <form action="{{ route('myOrder') }}" method="GET">
+                        <label for="duration" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select duration</label>
+                        <select id="duration" name="filter" onchange="this.form.submit()" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+                            <option value="">All Time</option>
+                            <option value="this_week" {{ request('filter') == 'this_week' ? 'selected' : '' }}>This Week</option>
+                            <option value="this_month" {{ request('filter') == 'this_month' ? 'selected' : '' }}>This Month</option>
+                            <option value="last_3_months" {{ request('filter') == 'last_3_months' ? 'selected' : '' }}>The Last 3 Months</option>
+                            <option value="last_6_months" {{ request('filter') == 'last_6_months' ? 'selected' : '' }}>The Last 6 Months</option>
+                            <option value="last_year" {{ request('filter') == 'last_year' ? 'selected' : '' }}>Last Year</option>
+                        </select>
+                    </form>
                 </div>
               </div>
             </div>
       
             <div class="mt-6 flow-root sm:mt-8">
               <div class="divide-y divide-gray-200 dark:divide-gray-700">
-                @foreach ($listOrders as $item)
+                {{-- @foreach ($listOrders as $item)
                 <div class="gap-y-2 py-6 md:flex md:items-center md:gap-y-4 md:py-6 md:flex-nowrap sm:flex-wrap">
                   <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
                     <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
                     <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                      <a href="#" class="hover:underline">#{{ $item->transaction_id }}</a>
+                      <a href="#" class="hover:underline">#{{ $item->id }}</a>
                     </dd>
                   </dl>
       
                   <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                    <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{{ $item->created_at->format('d M Y')  }}</dd>
+                    <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date :</dt>
+                    <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{{ $item->created_at->format('l, d M Y') }}
+                    </dd>
                   </dl>
       
                   <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
@@ -66,51 +70,62 @@
                   </dl>
       
                   <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                    <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Bayar</button>
-                    <a href="{{ route('payment', ['id' => $item->id]) }}"class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
+                    <a href="{{ route('payment',['id' =>$item->id]) }}"><button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Bayar</button></a>
+                    <a href="{{ route('details',['id' => $item->id]) }}" target="blank" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
+                    <a href="{{ route('view',['id' => $item->id]) }}" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View</a>
                   </div>
                 </div>
-                @endforeach
+                @endforeach --}}
 
-                <div class="flex items-center justify-center">
-                  <div class="bg-slate-400  shadow-md rounded-lg p-4 max-w-3xl w-full">
+                @forelse($listOrders as $order)
+                  @php
+                      $firstDetail = $order->transactionDetails->first();
+                  @endphp
+                <div class="py-4 flex items-center justify-center">
+                  <div class="bg-slate-50  shadow-md rounded-lg p-4 w-full">
                       <div class="flex justify-between items-center mb-2">
                           <div class="flex items-center">
                              
                               <div>
-                                  <div class="text-sm">25 Mei 2024</div>
+                                  <div class="text-sm">{{ $order->created_at->format('l, d M Y') }}</div>
                               </div>
-                              <span class="bg-green-600 text-xs px-2 py-1 rounded-lg ml-2">Selesai</span>
+                              <span class="bg-green-300 text-xs px-2 py-1 rounded-lg ml-2">{{ $order->transaction_status }}</span>
                           </div>
-                          <div class="text-xs text-gray-500">INV/20240525/MPL/3927529332</div>
+                          <div class="text-sm font-medium text-gray-500">#{{ $order->id }}</div>
                       </div>
                       <div class="border-b border-gray-700 mb-4"></div>
                       <div class="flex items-center mb-4">
                           <img src="https://via.placeholder.com/60" alt="Product Image" class="w-16 h-16 rounded-lg mr-4">
                           <div class="flex-1">
-                              <div class="font-semibold">PRODUCT NAME</div>
-                              <div class="text-sm text-gray-400">1 barang x Rp32.000</div>
+                              <div class="font-semibold">{{ $firstDetail->product->name }}</div>
+                              <div class="text-sm text-gray-400">{{ $order->transactionDetails->count() }} barang </div>
                           </div>
                           <div class="text-right">
                               <div class="font-semibold text-gray-300">Total</div>
-                              <div class="text-lg font-bold text-green-400">Rp 17.900</div>
+                              <div class="text-lg font-bold text-green-400">{{ 'Rp' . number_format($order->total_amount, 0, ',', '.') }}</div>
                           </div>
                       </div>
                       <div class="flex justify-end items-center gap-4">
-                        <a href="#">
+                        <a href="{{ route('invoice',['id' => $order->id]) }}">
                               <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
                                 <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                 lihat Detail
                                 </span>
+                              </button> 
+                          </a>
+                          <a href="{{ route('payment',['id' =>$order->id]) }}">
+                              <button type="button" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                beli lagi/ bayar
                               </button>
                           </a>
-                          <button type="button" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                            beli lagi/ bayar
-                          </button>
                           
                       </div>
                   </div>
-              </div>
+                </div>
+                @empty
+
+
+                @endforelse
                 {{-- <div class="gap-y-2 py-6 md:flex md:items-center md:gap-y-4 md:py-6 md:flex-nowrap sm:flex-wrap">
                   <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
                     <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
@@ -385,7 +400,7 @@
               </div>
             </div>
       
-            <nav class="mt-6 flex items-center justify-center sm:mt-8" aria-label="Page navigation example">
+            {{-- <nav class="mt-6 flex items-center justify-center sm:mt-8" aria-label="Page navigation example">
               <ul class="flex h-8 items-center -space-x-px text-sm">
                 <li>
                   <a href="#" class="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
@@ -419,7 +434,7 @@
                   </a>
                 </li>
               </ul>
-            </nav>
+            </nav> --}}
           </div>
         </div>
       </section>

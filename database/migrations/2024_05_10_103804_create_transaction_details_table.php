@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('transaction_id');
-            $table->foreign('transaction_id')->references('transaction_id')->on('transactions')->cascadeOnUpdate()->cascadeOnDelete();
-            
+            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnUpdate()->cascadeOnDelete();
+            // $table->string('transaction_id');
+            // $table->foreign('transaction_id')->references('transaction_id')->on('transactions')->cascadeOnUpdate()->cascadeOnDelete();
 
             $table->foreignId('product_id')->constrained('products')->cascadeOnUpdate()->cascadeOnDelete();
             

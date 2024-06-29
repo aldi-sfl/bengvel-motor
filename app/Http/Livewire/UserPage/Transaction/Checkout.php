@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\UserPage\Transaction;
 
 use App\Models\Cart;
+use App\Models\dataBank;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Shipping;
@@ -18,12 +19,13 @@ class Checkout extends Component
     public $total = 0;
     public $grandTotal = 0;
     public $checkWeight;
+    public $list_payment;
 
     // public $id;
     public $shippingMethod;
     public $payment_method;
     public $address;
-    public $accordionState = [];
+    public $phone;
     public $shippings;
     public $fromCities = [];
     public $toCities = [];
@@ -41,22 +43,34 @@ class Checkout extends Component
     public $selectedCityName;
     public $avatar;
 
-    
-
+    // public $accordionState = [];
+    public $accordionState = [
+        'transfer' => false,
+    ];
 
     public function mount($id)
     {
         $this->avatar = session('avatar');
-        $this->transaction = Transaction::with('transactionDetails.product')->findOrFail($id);
+        $user = auth()->user();
+        $this->address = $user->address;
+        $this->phone = $user->phone;
+        $this->transaction = Transaction::with(['transactionDetails.product','user'])->findOrFail($id);
         foreach ($this->transaction->transactionDetails as $detail) {
             $this->total += $detail->price * $detail->quantity;
         }
         $this->calculateTotalWeight();
+
+        $this->list_payment = dataBank::all();
         $this->payment_method = $this->transaction->method_payment;
-        $this->accordionState = [
-            'e_wallet' => in_array($this->payment_method, ['dana', 'gopay']),
-            'bank_transfer' => in_array($this->payment_method, ['bca', 'bri']),
-        ];
+        // $this->accordionState = [
+        //     'e_wallet' => in_array($this->payment_method, ['dana', 'gopay']),
+        //     'bank_transfer' => in_array($this->payment_method, ['bca', 'bri']),
+        // ];
+    }
+
+    public function updatedPaymentMethod()
+    {
+        $this->accordionState['transfer'] = true;
     }
 
     public function calculateTotalWeight()
@@ -165,10 +179,22 @@ class Checkout extends Component
             if ($responseCity->successful()) {
                 $this->toCities = $responseCity['rajaongkir']['results'];
                 $this->selectedProvinceName = $this->provinces[array_search($value, array_column($this->provinces, 'province_id'))]['province'];
-                $this->selectedCityName = $this->toCities[array_search($value, array_column($this->toCities, 'city_id'))]['city_name'];
+                // $this->selectedCityName = $this->toCities[array_search($value, array_column($this->toCities, 'city_id'))]['city_name'];
             }
         } else {
             $this->toCities = [];
+        }
+    }
+
+    public function updatedtoCity($value)
+    {
+        if ($value) {
+            $city = collect($this->toCities)->firstWhere('city_id', $value);
+            if ($city) {
+                $this->selectedCityName = $city['city_name'];
+            }
+        } else {
+            $this->selectedCityName = null;
         }
     }
 
@@ -199,16 +225,14 @@ class Checkout extends Component
         
     }
 
-    
-
-    public function updatedPaymentMethod($value)
-    {
-        // Update accordion state based on selected payment method
-        $this->accordionState = [
-            'e_wallet' => in_array($value, ['dana', 'gopay']),
-            'bank_transfer' => in_array($value, ['bca', 'bri']),
-        ];
-    }
+    // public function updatedPaymentMethod($value)
+    // {
+    //     // Update accordion state based on selected payment method
+    //     $this->accordionState = [
+    //         'e_wallet' => in_array($value, ['dana', 'gopay']),
+    //         'bank_transfer' => in_array($value, ['bca', 'bri']),
+    //     ];
+    // }
 
     public function updatedSelectedShippingService($value)
     {
@@ -260,6 +284,7 @@ class Checkout extends Component
 
         $this->validate([
             'address' => 'required_if:shippingMethod,kirim-paket',
+            'phone' => 'required_if:shippingMethod,kirim-paket',
             'shippingMethod' => 'required',
             'payment_method' => 'required|string',
             'courier' => 'required_if:shippingMethod,kirim-paket',
@@ -267,11 +292,14 @@ class Checkout extends Component
             'selectedShippingPrice' => 'required_if:shippingMethod,kirim-paket',
         ]);
 
-        $transactionDetail = $this->transaction->transactionDetails->first();
+        // $transactionDetail = $this->transaction->transactionDetails->first();
+        $userId = auth()->id();
+        $transaction = Transaction::where('user_id', $userId)->latest()->first();
         $selectedCartItems = Session::get('selected_cart_items', []);
 
-        if ($transactionDetail) {
+        if ($transaction) {
             $formattedAddress = $this->address . ', ' . $this->selectedCityName . ', ' . $this->selectedProvinceName;
+
             $this->grandTotal = $this->transaction->transactionDetails->sum(function($detail) {
                 return $detail->price * $detail->quantity;
             });
@@ -279,9 +307,10 @@ class Checkout extends Component
                 $this->grandTotal += $this->selectedShippingPrice;
             }
             Shipping::updateOrCreate([
-                'transaction_detail_id' => $transactionDetail->id,
+                'transaction_id' => $transaction->id,
                 'shipping_method' => $this->shippingMethod,
                 'address' => $this->shippingMethod == 'kirim-paket' ? $formattedAddress : null,
+                'phone' => $this->phone,
                 'courier_provider' => $this->courier,
                 'couries_service' => $this->selectedShippingService,
                 'servicce_price' => $this->selectedShippingPrice,
@@ -308,6 +337,7 @@ class Checkout extends Component
         }
 
         toastr()->success('Data has been saved successfully!', 'Congrats', ['timeOut' => 3500]);
+        return redirect()->route('payment', ['id' => $transaction->id]);
         // session()->flash('message', 'Payment method updated successfully.');
     }
 
@@ -318,10 +348,10 @@ class Checkout extends Component
 
         if ($latestTransaction) {
             $latestTransaction->delete();
-            toastr()->success('Latest transaction data deleted successfully.');
+            // toastr()->success('Latest transaction data deleted successfully.');
             return redirect()->to('/cart');
         } else {
-            toastr()->error('No transaction data found.');
+            // toastr()->error('No transaction data found.');
         }
     }
 

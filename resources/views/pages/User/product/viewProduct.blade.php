@@ -56,7 +56,7 @@
 
                         </div>
                     @else
-                        <img src="{{ Storage::url($product->images->first()->image_url) }}" class="w-full rounded-lg md:h-auto" alt="{{ $product->name }} image not found" />
+                        <img src="{{ Storage::url($product->images->first()->image_url) }}" class="w-full rounded-lg md:h-auto" alt="image not found" />
                     @endif
                     
                 <div class="mt-6 sm:mt-8 lg:mt-0">

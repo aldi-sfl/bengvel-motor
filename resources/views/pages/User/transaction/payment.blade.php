@@ -12,25 +12,28 @@
     </a>
 <div class="flex items-center justify-center">
     <div class="bg-slate-400 shadow-xl rounded-lg p-8 max-w-xl w-full">
-        
+      
+        </script>
         <h1 class="text-xl font-semibold mb-4">Pembayaran</h1>
-        <h1 class="text-xl font-semibold mb-4">{{ $transaction->user->name }}</h1>
+        {{-- <h1 class="text-xl font-semibold mb-4">{{ $transaction->user->name }}</h1> --}}
         <div class="bg-gray-100 p-4 rounded-lg mb-6">
             <div class="flex justify-between">
                 <span class="text-gray-600">Total Pembayaran</span>
                 <span class="font-semibold text-red-500">{{ 'Rp' . number_format($transaction->total_amount, 0, ',', '.') }}</span>
             </div>
-            <div class="flex justify-between mt-2">
+            {{-- <div class="flex justify-between mt-2">
                 <span class="text-gray-600">Bayar dalam</span>
                 <span class="font-semibold text-red-500">13 jam 58 menit 38 detik</span>
             </div>
-                <span class="text-gray-500 text-sm">Jatuh tempo 06 Jun 2024, 08:47</span> 
+                <span class="text-gray-500 text-sm">Jatuh tempo 06 Jun 2024, 08:47</span>  --}}
         </div>
+
+
         <div class="mb-6">
-            <h2 class="text-lg font-semibold mb-2">Transfer (nama bank/ewallet) an.</h2>
+            <h2 class="text-lg font-semibold mb-2">Transfer ({{ $transaction->method_payment }}) an.{{ $paymentMethod ? $paymentMethod->atas_nama : 'N/A' }}</h2>
             <div class="bg-gray-100 p-4 rounded-lg">
                 <div class="flex justify-between items-center">
-                    <span id="paymentCode" class="font-semibold text-gray-700">082673812736</span>
+                    <span id="paymentCode" class="font-semibold text-gray-700 tracking-widest">{{ $paymentMethod ? $paymentMethod->bank_account : 'N/A' }}</span>
                     <button onclick="copyCode()" >
                     <span id="default-message" class="inline-flex items-center">
                         <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
@@ -70,7 +73,7 @@
             <ol class="list-decimal list-inside text-gray-700 space-y-2">
                 <li>lakukan transaksi ke rekening yang telah disediakan </li>
                 <li>lakukan pembayaran sebesar :</li>
-                <li>Setelah transaksi berhasil, kamu akan mendapatkan bukti pembayaran. Mohon kirim bukti pembayaran tersebut ke whatsapp kami untuk verifikasi lebih lanjut.</li>
+                <li>Setelah transaksi berhasil, kamu akan mendapatkan bukti pembayaran. Mohon kirim bukti pembayaran tersebut ke <a href="#" class="font-semibold text-gray-900 underline dark:text-white decoration-indigo-500">whatsApp kami</a> untuk verifikasi lebih lanjut.</li>
             </ol>
         </div>
       

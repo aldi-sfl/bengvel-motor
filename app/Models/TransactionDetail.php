@@ -21,8 +21,8 @@ class TransactionDetail extends Model
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function shipping()
-    {
-        return $this->hasOne(Shipping::class);
-    }
+    // public function shipping()
+    // {
+    //     return $this->hasOne(Shipping::class);
+    // }
 }

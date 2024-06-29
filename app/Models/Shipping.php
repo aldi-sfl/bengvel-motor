@@ -9,10 +9,14 @@ class Shipping extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['transaction_detail_id', 'shipping_method', 'address', 'couries_service','courier_provider', 'servicce_price'];
+    protected $fillable = ['transaction_id', 'shipping_method', 'address', 'couries_service','courier_provider', 'servicce_price'];
 
-    public function transactionDetail()
+    // public function transactionDetail()
+    // {
+    //     return $this->belongsTo(TransactionDetail::class);
+    // }
+    public function transaction()
     {
-        return $this->belongsTo(TransactionDetail::class);
+        return $this->belongsTo(Transaction::class);
     }
 }

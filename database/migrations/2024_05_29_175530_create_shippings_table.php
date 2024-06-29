@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_detail_id')->constrained()->onDelete('cascade');
+            $table->foreignId('transaction_id')->constrained()->onDelete('cascade');
             $table->string('shipping_method');
             $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->string('courier_provider')->nullable();
             $table->string('couries_service')->nullable();
             $table->string('servicce_price')->nullable();

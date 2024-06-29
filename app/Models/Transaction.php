@@ -14,7 +14,7 @@ class Transaction extends Model
     protected $casts = [
         'product' => 'array'
     ];
-    protected $fillable = ['user_id', 'total_amount', 'transaction_status', 'method_payment', 'transaction_id'];
+    protected $fillable = ['user_id', 'total_amount', 'transaction_status', 'method_payment',];
 
     public function transactionDetails()
     {
@@ -26,19 +26,16 @@ class Transaction extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function generateTransactionId()
+    public function shipping()
     {
-        $randomNumber = random_int(10000, 99999);
-        
-        return 'OB' . $randomNumber;
+        return $this->hasOne(Shipping::class);
     }
 
-    protected static function boot()
-    {
-        parent::boot();
 
-        static::creating(function ($model) {
-            $model->transaction_id = self::generateTransactionId();
-        });
+    public function paymentMethod()
+    {
+        return $this->hasOne(dataBank::class);
     }
+
+   
 }

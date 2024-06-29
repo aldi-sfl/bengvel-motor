@@ -4,7 +4,7 @@
     <section class="bg-white py-8 mt-14 antialiased dark:bg-gray-900 md:py-16">
         <form action="#" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
           <div class="mx-auto max-w-3xl">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Order summary lepwire</h2>
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Order summary</h2>
       
       
             <div class="mt-6 sm:mt-8">
@@ -71,20 +71,21 @@
                 
                 @if ($shippingMethod == 'kirim-paket')                
                     <div class="w-1/2 mx-auto">
-                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">masukan alamat lengkap</label>
-                        <textarea id="message" wire:model="address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="alamat"></textarea>
-                        
-                        {{-- @livewire('user-page.transaction.check-ongkir', [
-                            'selectedShippingService' => $selectedShippingService,
-                            'selectedShippingPrice' => $selectedShippingPrice,
-                        ]) --}}
-
-                        <div class="cekongkir">
-                            @if (session()->has('error'))
+                        @if (session()->has('error'))
                             <div class="bg-red-500 text-white p-2 rounded">
                                 {{ session('error') }}
                             </div>
-                            @endif
+                            <p>terjadi kesalahan silahkan cek koneksi internet anda lalu refresh halaman ini kembali</p>
+                        @else
+                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">masukan alamat lengkap</label>
+                        <textarea id="message" wire:model="address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="alamat">
+                        </textarea>
+                        <div class="mt-4">
+                            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No handphone</label>
+                            <input wire:model.defer="phone" type="text" id="phone" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="cekongkir">
                             <form class="max-w-sm mx-auto">
                             
                                 <label for="fromProvince" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only">Provinsi asal</label>
@@ -217,6 +218,7 @@
                         
                     
                         </div>
+                        @endif {{-- end of error statement --}}
                     </div>
                 @endif
                 
@@ -226,8 +228,8 @@
               <div class="mt-6" >
                   <h4 class="text-xl font-semibold text-gray-900 dark:text-white">Pilih Metode Pembayaran</h4>
                   
-                  <div id="accordion-flush" data-accordion="open" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
-                      <!-- E-wallet Section -->
+                  <div id="accordion-open" data-accordion="open" data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" data-inactive-classes="text-gray-500 dark:text-gray-400">
+                      {{-- <!-- E-wallet Section -->
                       <h2 id="accordion-flush-heading-1">
                           <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
                               <span class="flex items-center">
@@ -307,7 +309,55 @@
                                   </li>
                               </ul>
                           </div>
+                      </div> --}}
+
+                      <h2 id="accordion-flush-heading-1 ">
+                          <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+                              <span class="flex items-center">
+                                  Transfer 
+                                  <div wire:loading.delay wire:target="payment_method" class="ml-2 px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">loading...</div>
+                                  <svg class="w-5 h-5 mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- SVG content --></svg>
+                              </span>
+
+                              <svg data-accordion-icon class="w-3 h-3 {{ $accordionState['transfer'] ? 'rotate-180' : '' }} shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                              </svg>
+                          </button>
+                      </h2>
+                      <div id="accordion-flush-body-1" class="{{ $accordionState['transfer'] ? '' : 'hidden' }}" aria-labelledby="accordion-flush-heading-1">
+                          <div class="py-5 border-b border-gray-200 dark:border-gray-700">
+                              <ul class="grid w-full gap-6 md:grid-cols-1">
+                                @if($shippingMethod == 'ambil-toko')
+                                    <li>
+                                        <input type="radio" id="cash_on_site" name="payment_method" wire:model="payment_method" value="bayar-diToko" class="hidden peer" required />
+                                        <label for="cash_on_site" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                            <div class="block">
+                                                <div class="w-full text-lg font-semibold">Bayar di Toko</div>
+                                            </div>
+                                            <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                            </svg>
+                                        </label>
+                                    </li>
+                                @endif
+                                @foreach($list_payment as $payment)
+                                    <li>
+                                        <input type="radio" id="payment_{{ $payment->id }}" name="payment_method" wire:model="payment_method" value="{{ $payment->bank_name }}" class="hidden peer" required />
+                                        <label for="payment_{{ $payment->id }}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                            <div class="block">
+                                                <div class="w-full text-lg font-semibold">{{ $payment->bank_name }}</div>
+                                            </div>
+                                            <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                            </svg>
+                                        </label>
+                                    </li>
+                                @endforeach
+                                
+                              </ul>
+                          </div>
                       </div>
+                      
                   </div>
               
                   <div class="space-y-4">
@@ -346,16 +396,7 @@
                           {{ session('message') }}
                       </div>
                   @endif
-                  {{-- @error('payment_method')
-                    <div class="mt-4 p-4 text-red-600 bg-red-100 rounded-lg">
-                        {{ $message}}
-                    </div>
-                  @enderror
-                  @error('shippingMethod')
-                    <div class="mt-4 p-4 text-red-600 bg-red-100 rounded-lg">
-                        {{ $message}}
-                    </div>
-                  @enderror --}}
+                 
                     @if ($errors->any())
                         <div class="mt-4 p-4 text-red-600 bg-red-100 rounded-lg">
                             <ul>
