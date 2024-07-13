@@ -39,7 +39,7 @@ class ProfileController extends Controller
         ]);
 
 
-        toastr()->success('Profile updated successfully!', 'Success', ['timeOut' => 3500]);
+        toastr()->success('Profile updated successfully!', 'Success', ['timeOut' => 1000]);
         return redirect()->route('profile');
     }
 }

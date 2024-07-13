@@ -1,7 +1,7 @@
 <div wire:init="loadProduct">
     {{-- In work, do what you enjoy. --}}
    
-    <form class="max-w-md mx-auto px-4 pb-4" wire:submit.prevent="search">   
+    <form class="max-w-xl mx-auto px-4 pb-4" wire:submit.prevent="search">   
         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
         <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -64,10 +64,11 @@
             @endforeach
                 
             </ul>
+            
         </div>
     </div>
 
-    <div class="flex h-full">
+    <div class="flex h-full bg-gray-100 rounded-lg">
         <!-- Sidebar Filter for larger screens -->
         <div class="hidden md:block w-1/6 p-4 bg-slate-100 rounded-lg shadow-md ">
             <div class="h-full flex  justify-center ">
@@ -77,6 +78,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707l-7.414 7.414V21a1 1 0 01-1.447.894L9 20.382V13.12L1.293 6.707A1 1 0 011 6V4z" />
                         </svg>
                         <h2 class="text-2xl font-bold text-center mr-2">Filter</h2>
+                        <p class="sr-only" wire:loading.delay wire:target="categories">loading</p>
                     </div>
                     <div class="mb-4">
                         <h3 class="text-medium font-semibold mb-4 ">Category</h3>
@@ -90,6 +92,7 @@
                             </li>
                             @endforeach
                         </ul>
+                        
                     </div>
                 </div>
             </div>

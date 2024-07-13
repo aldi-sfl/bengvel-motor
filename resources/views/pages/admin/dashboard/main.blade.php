@@ -61,9 +61,48 @@
         </a>
       </div>
     </div>
-  </div>
+</div>
 
-  {{-- @livewire('admin.category.index')
-  @livewire('admin.product.index') --}}
-  
+
+<h1>Sales Report</h1>
+
+<form action="{{ route('admin') }}" method="GET">
+    <label for="filter" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Filter by:</label>
+    <select id="filter" name="filter" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option value="all" {{ $filter == 'all' ? 'selected' : '' }}>All Time</option>
+        <option value="last_month" {{ $filter == 'last_month' ? 'selected' : '' }}>Last Month</option>
+        <option value="last_2_months" {{ $filter == 'last_2_months' ? 'selected' : '' }}>Last 2 Months</option>
+        <option value="last_3_months" {{ $filter == 'last_3_months' ? 'selected' : '' }}>Last 3 Months</option>
+        <option value="last_year" {{ $filter == 'last_year' ? 'selected' : '' }}>Last Year</option>
+    </select>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Apply Filter</button>
+</form>
+
+<p>Total Sales: ${{ number_format($totalSales, 2) }}</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>User</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Payment Method</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($transactions as $transaction)
+            <tr>
+                <td>{{ $transaction->id }}</td>
+                <td>{{ $transaction->user->name }}</td>
+                <td>${{ number_format($transaction->total_amount, 2) }}</td>
+                <td>{{ $transaction->transaction_status }}</td>
+                <td>{{ $transaction->method_payment ?: 'N/A' }}</td>
+                <td>{{ $transaction->created_at->format('Y-m-d H:i:s') }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
 @endsection

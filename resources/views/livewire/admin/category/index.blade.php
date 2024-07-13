@@ -34,6 +34,7 @@
             </form> --}}
         
         {{-- @else --}}
+        <h2 class="text-4xl font-bold dark:text-white flex flex-col justify-center items-center pb-6">Manage Category</h2>
         <form wire:submit.prevent="create">   
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -50,7 +51,6 @@
         </form>
         
         {{-- @endif --}}
-
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

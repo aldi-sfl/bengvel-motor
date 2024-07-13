@@ -200,7 +200,7 @@ class CartList extends Component
             // Cart::where('user_id', $userId)->whereIn('id', $this->selected_cart_items)->delete();
             Session::put('selected_cart_items', $this->selected_cart_items);
             DB::commit();
-            toastr()->success('Transaction completed successfully.', 'Congrats', ['timeOut' => 3500]);
+            toastr()->success('Transaction completed successfully.', 'Congrats', ['timeOut' => 1000]);
             return redirect()->route('checkout.show', ['id' => $transaction->id]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -279,7 +279,7 @@ class CartList extends Component
             }
     
             $this->emit('updateCartCount');
-            toastr()->success('Product added to the cart successfully', 'Congrats', ['timeOut' => 3500]);
+            toastr()->success('Product added to the cart successfully', 'Congrats', ['timeOut' => 1000]);
         } else {
             
             return redirect(route('login'));

@@ -43,20 +43,39 @@ class ListProduct extends Component
     //     ]);
     // }
         // ==============
-        
+    
+    // mixed search & filter
+    // public function search()
+    // {
+    //     $this->products = Product::when($this->searchTerm, function ($query) {
+    //         $query->where('name', 'like', '%'.$this->searchTerm.'%')
+    //               ->orWhere('description', 'like', '%'.$this->searchTerm.'%');
+    //     })->when($this->categories, function ($query) {
+    //         $query->whereIn('category_id', $this->categories);
+    //     })->get();
+    // }
+
     public function search()
     {
         $this->products = Product::when($this->searchTerm, function ($query) {
-            $query->where('name', 'like', '%'.$this->searchTerm.'%')
-                  ->orWhere('description', 'like', '%'.$this->searchTerm.'%');
-        })->when($this->categories, function ($query) {
+            $query->where('name', 'like', '%' . $this->searchTerm . '%')
+                  ->orWhere('description', 'like', '%' . $this->searchTerm . '%');
+        })->get();
+    }
+
+    public function filter()
+    {
+        $this->products = Product::when($this->categories, function ($query) {
             $query->whereIn('category_id', $this->categories);
         })->get();
     }
 
+    
+
     public function render()
     {
-        $this->search(); // Ensure products are loaded initially
+        $this->search();
+        $this->filter();
 
         return view('livewire.user-page.shop-list.list-product', [
             'products' => $this->readyToLoad ? $this->products : [],
@@ -81,7 +100,7 @@ class ListProduct extends Component
             }
     
             $this->emit('updateCartCount');
-            toastr()->success('Product added to the cart successfully', 'Congrats', ['timeOut' => 3500]);
+            toastr()->success('Product added to the cart successfully', 'Congrats', ['timeOut' => 1000]);
         } else {
             
             return redirect(route('login'));

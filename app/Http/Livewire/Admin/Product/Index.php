@@ -94,7 +94,7 @@ class Index extends Component
         $this->categories = Category::all();
         
         // Show success message
-        toastr()->success('Data has been saved successfully!', 'Congrats',['timeOut' => 3500]);
+        toastr()->success('Data has been saved successfully!', 'Congrats',['timeOut' => 1000]);
     }
     
 
@@ -160,7 +160,7 @@ class Index extends Component
     {
         Product::destroy($id);
         $this->products = Product::all();
-        toastr()->success('Data has been deleted!',['timeOut' => 3500]);
+        toastr()->success('Data has been deleted!',['timeOut' => 1000]);
         
     }
 
@@ -180,7 +180,7 @@ class Index extends Component
         if ($product) {
             $product->delete();
             $this->showDeleteModal = false; // Close the modal on successful deletion
-            toastr()->success('Data has been deleted!',['timeOut' => 3500]);
+            toastr()->success('Data has been deleted!',['timeOut' => 1000]);
         }
     }
 

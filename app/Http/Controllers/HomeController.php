@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +29,11 @@ class HomeController extends Controller
             // If user is not authenticated or not an admin, redirect them
             return redirect()->route('admin'); 
         }
+        $heroImage = settings::all();
         $avatar = session()->get('avatar');
-        return view('main', ['avatar' => $avatar]);
+        return view('main', [
+            'avatar' => $avatar,
+            'heroImage' =>$heroImage
+        ]);
     }
 }

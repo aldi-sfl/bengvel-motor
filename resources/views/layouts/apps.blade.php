@@ -24,12 +24,25 @@
     @livewireStyles
     {{-- @vite(['resources/css/app.css','resources/js/app.js']) --}}
 </head>
-<body>
+<body   @if (request()->is('home') ||
+            request()->is('/') || 
+            request()->is('shop/product/*/*') ||
+            request()->is('myOrder') ||
+            request()->is('profile') || 
+            request()->is('contact'))
+        @else style="background-color: #9FA1A1" 
+        
+        @endif>
+
     @include('partials.navbar')
     {{-- <div class="container mx-auto px-5 py-4" >
     </div> --}}
     
     @yield('content')
+    <div style="background-color: #9FA1A1">
+        @yield('content_shop')
+    </div>
+
     <!-- Scripts -->
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>

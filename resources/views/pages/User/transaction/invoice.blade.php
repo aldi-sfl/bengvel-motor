@@ -182,14 +182,15 @@
 </head>
 <body>
     <a href="javascript:history.back()" class="back-button">Back</a>
-    <a href="{{ route('download.invoice',['id' => $orders->id]) }}" class="download-button">
+    {{-- tombol download --}}
+    {{-- <a href="{{ route('download.invoice',['id' => $orders->id]) }}" class="download-button">
         <span class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 19" width="19" height="19">
                 <path d="M5 20h14v-2H5v2zM12 2l-5.5 5.5h3.5v7h4v-7h3.5L12 2z"/>
             </svg>
         </span>
         Download
-    </a>
+    </a> --}}
     <div class="invoice-container">
         <header>
             {{-- <img src="../image/gas.png" alt="Logo" class="logo"> --}}

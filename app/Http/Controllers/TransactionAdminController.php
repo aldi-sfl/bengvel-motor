@@ -4,16 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TransactionAdminController extends Controller
 {
-    // public function index()
-    // {   
-    //     $transaction_list = Transaction::with(['user','transactionDetails.product'])->get();
-    //     return view('pages.admin.transactionAdmin',[
-    //         'transaction_list' => $transaction_list
-    //     ]);
-    // }
+
     public function index(Request $request)
     {
         $query = Transaction::with(['user','transactionDetails.product']);
@@ -60,5 +55,40 @@ class TransactionAdminController extends Controller
 
         // Redirect back with a success message
         return redirect()->route('transaction')->with('success', 'Transaction status updated successfully.');
+    }
+
+    public function view_pdf($id)
+    {
+        $avatar = session('avatar');
+        // $listOrders = Transaction::with('user')->where('user_id', $userId)->get();
+        $orders = Transaction::with(['user', 'transactionDetails.product'])->where('id', $id) ->first();;
+        // $pdf = Pdf::loadView('pages.User.transaction.invoice', ['listOrders' => $listOrders, 'avatar' => $avatar]);
+        $pdf = Pdf::loadView('pages.User.transaction.invoice', ['orders' => $orders, 'avatar' => $avatar]);
+        // return $pdf->download('invoice.pdf');
+        // return $pdf->stream('invoice.pdf');
+        return view('pages.User.transaction.invoice',[
+            'orders' => $orders,
+        ]);
+
+    }
+
+    public function download_pdf($id)
+    {
+        $avatar = session('avatar');
+        $orders = Transaction::with(['user', 'transactionDetails.product'])->where('id', $id) ->first();
+        if (!$orders) {
+            return abort(404, 'Transaction not found.');
+        }
+       
+        $invoiceDate = $orders->created_at->format('Ymd');
+  
+        $transactionId = $orders->id;
+
+  
+        $pdfFileName = "invoice_{$invoiceDate}_{$transactionId}.pdf";
+
+        $pdf = Pdf::loadView('pages.User.transaction.invoiceDownload', ['orders' => $orders, 'avatar' => $avatar]);
+
+        return $pdf->download($pdfFileName);
     }
 }

@@ -336,7 +336,7 @@ class Checkout extends Component
             return;
         }
 
-        toastr()->success('Data has been saved successfully!', 'Congrats', ['timeOut' => 3500]);
+        toastr()->success('Data has been saved successfully!', 'Congrats', ['timeOut' => 1000]);
         return redirect()->route('payment', ['id' => $transaction->id]);
         // session()->flash('message', 'Payment method updated successfully.');
     }

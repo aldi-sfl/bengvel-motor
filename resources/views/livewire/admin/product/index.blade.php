@@ -156,7 +156,10 @@
 
 
     <!-- Start block -->
+    
+
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
+        <h2 class="text-4xl font-bold dark:text-white flex flex-col justify-center items-center pb-6">Manage Product</h2>
         <div class="mx-auto max-w-screen-x2 {{-- px-4 lg:px-12 --}}">
             <!-- Start coding here -->
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">

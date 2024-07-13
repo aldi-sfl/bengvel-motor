@@ -11,14 +11,17 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\paymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\HeroController;
 use App\Http\Livewire\Admin\Product\Preview;
 use App\Http\Controllers\ListOrderController;
 use App\Http\Controllers\Payment_MethodController;
 use App\Http\Controllers\ProductInfoController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\TransactionAdminController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Livewire\UserPage\Transaction\Checkout;
 use App\Http\Livewire\UserPage\Transaction\CheckOngkir;
+use App\Models\settings;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,16 +40,16 @@ use App\Http\Livewire\UserPage\Transaction\CheckOngkir;
 // })->name('home');
 Route::get('/', function () {
     $avatar = session('avatar');
-    return view('main', compact('avatar'));
+    $heroImage = settings::all();
+    return view('main', compact('avatar', 'heroImage'));
 })->name('home');
-
 
 
 Auth::routes([
     // 'login' => false,
     // 'register' => false,
     // 'password.request' => false,
-    // 'verify' => true,
+    'verify' => true,
 ]);
 
 
@@ -106,32 +109,46 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/payment/{id}', [paymentController::class, 'index'])->name('payment');
     Route::get('/myOrder', [ListOrderController::class, 'index'])->name('myOrder');
-
+    
+    Route::post('/myOrder/Cart/{id}', [ListOrderController::class, 'buyAgain'])->name('beli-lagi');
+    
     Route::get('/invoice/download/{id}', [InvoiceController::class, 'view_pdf'])->name('download.invoice');
     Route::get('/invoice/{id}', [InvoiceController::class,  'index'])->name('invoice');
 });
 
 Route::middleware('admin')->group(function () {
 //    Route::get('/', SocialController::class)->name('redirect');
-   
-    Route::view('/admin', 'pages.admin.dashboard.main')->name('admin');
+
+    Route::get('/admin', [SalesController::class, 'salesReport'])->name('admin');
+
+    // Route::view('/admin', 'pages.admin.dashboard.main')->name('admin');
+
     
     // admin pages
     Route::view('/admin/produk', 'pages.admin.product')->name('produk'); 
     Route::view('/admin/category', 'pages.admin.category')->name('category');
+    
     // Route::view('/admin/transaction', 'pages.admin.transactionAdmin')->name('transaction');
     // Route::view('/admin/user', 'pages.admin.user')->name('user');
     
-    // Route::view('/payment-method', 'pages.admin.payment_method');
-    
     Route::get('/admin/transaction', [TransactionAdminController::class, 'index'])->name('transaction');
+    Route::get('/admin/transaction/view/{id}', [TransactionAdminController::class, 'view_pdf'])->name('transaction-detail');
+    Route::get('/admin/transaction/view/download/{id}', [TransactionAdminController::class, 'download_pdf'])->name('transaction-download');
     Route::put('/admin/transactions/{id}/status', [TransactionAdminController::class, 'changeStatus'])->name('transaction.changeStatus');
+    
     Route::get('/admin/users', [UserAdminController::class, 'index'])->name('user-admin');
+    Route::get('/admin/users/add', [UserAdminController::class, 'addUser'])->name('add-user');
+    Route::post('/admin/users/add/create', [UserAdminController::class, 'create'])->name('create-user');
+    Route::delete('/user/{id}', [UserAdminController::class, 'delete'])->name('user.delete');
+
     Route::get('/admin/list-payment', [Payment_MethodController::class, 'index'])->name('list-payment');
     Route::post('/admin/list-payment', [Payment_MethodController::class, 'store'])->name('list-payment.store');
     Route::get('/admin/list-payment/edit/{id}', [Payment_MethodController::class, 'edit'])->name('payment-methods.edit');
     Route::post('/admin/list-payment/update/{id}', [Payment_MethodController::class, 'update'])->name('payment-methods.update');
     Route::post('/admin/list-payment/delete/{id}', [Payment_MethodController::class, 'destroy'])->name('payment-methods.destroy');
+
+    Route::get('/admin/settings', [HeroController::class, 'index'])->name('settings');
+    Route::post('/admin/settings', [HeroController::class, 'insert'])->name('hero-insert');
 });
 
 

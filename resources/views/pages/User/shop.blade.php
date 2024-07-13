@@ -1,5 +1,5 @@
 @extends('layouts.apps')
-@section('content')
+@section('content_shop')
     
 <div class="md:container md:mx-auto pt-20 mt-10">
     
@@ -40,9 +40,11 @@
         </div>
     </div> --}}
 
-    <div class="">
+    <div class="w-full h-full ">
         @livewire('user-page.shop-list.list-product')
     </div>
     
+</div>
+<div class="mb-60">
 </div>
 @endsection

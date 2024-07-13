@@ -85,7 +85,7 @@ class Edit extends Component
                 // Check if any properties were changed, new images added, or images marked for deletion
                 if ($product->isDirty() || $newImages || $imagesToDelete) {
                     $product->save();
-                    toastr()->success('Product updated successfully!', 'Congrats', ['timeOut' => 3500]);
+                    toastr()->success('Product updated successfully!', 'Congrats', ['timeOut' => 1000]);
 
                     if ($newImages) {
                         $this->handleImageUpload($product);
@@ -99,11 +99,11 @@ class Edit extends Component
 
                     $this->BackTo();
                 } else {
-                    toastr()->info('No changes detected to save.', 'Info', ['timeOut' => 3500]);
+                    toastr()->info('No changes detected to save.', 'Info', ['timeOut' => 1000]);
                 }
             }
         } catch (\Exception $e) {
-            toastr()->error('Failed to update product: ' . $e->getMessage(), 'Error', ['timeOut' => 3500]);
+            toastr()->error('Failed to update product: ' . $e->getMessage(), 'Error', ['timeOut' => 1000]);
         }
     }
 

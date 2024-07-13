@@ -1,12 +1,8 @@
 
 @extends('layouts.apps')
 @section('content')
-<section class="bg-gray-50 dark:bg-gray-900">
+<section class="bg-gray-50 dark:bg-gray-900 py-20">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-            <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-            Flowbite    
-        </a>
         <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -29,10 +25,13 @@
                         @error('password')
                                 <p class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
+                        <p class="text-sm font-light text-gray-500 dark:text-gray-400 my-2">
+                            <a href="{{ ('/password/reset') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot Password</a>
+                        </p>
                     </div>
 
                     <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
-
+                    
                     <button type="button" id="googleSignInButton" class="w-full text-black bg-white hover:bg-[#F3F4F6]/90 focus:ring-4 focus:outline-none focus:ring-[#F3F4F6]/50 border-2 border-inherit font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
                         <svg class="w-4 h-4 me-2" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" id="Google"><path fill="#4285f4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027" class="color4285f4 svgShape"></path><path fill="#34a853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1" class="color34a853 svgShape"></path><path fill="#fbbc05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782" class="colorfbbc05 svgShape"></path><path fill="#ea4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251" class="coloreb4335 svgShape"></path>
                         </svg>
@@ -46,6 +45,7 @@
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                         Don’t have an account yet? <a href="{{ ('/register') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
                     </p>
+                    
                 </form>
             </div>
         </div>

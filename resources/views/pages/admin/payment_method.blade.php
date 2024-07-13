@@ -2,17 +2,16 @@
 
 @section('user_content')
     <section class="bg-slate-200 dark:bg-gray-900 p-3 sm:p-5">
+        <h2 class="text-4xl font-bold dark:text-white flex flex-col justify-center items-center pb-6">Daftar metode pembayaran</h2>
     <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
         <!-- Start coding here -->
         <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                
                 <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                     
                 </div>
             </div>
             <div class="overflow-x-auto">
-                <h2 class="mb-5 mx-4 text-xl font-bold text-gray-900 dark:text-white">Daftar metode pembayaran</h2>
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>

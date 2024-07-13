@@ -59,7 +59,7 @@ class Index extends Component
         
         // $this->emit('categoryCreated');
         // session()->flash('message', 'Category created successfully!');
-        toastr()->success('Data has been saved successfully!', 'Congrats',['timeOut' => 3500]);
+        toastr()->success('Data has been saved successfully!', 'Congrats',['timeOut' => 1000]);
 
     }
 
@@ -90,7 +90,7 @@ class Index extends Component
                 $category->update(['category_name' => $this->name]);
                 $this->categories = Category::all();
                 $this->reset('name');
-                toastr()->success('Data has been updated!', 'Congrats',['timeOut' => 3500]);
+                toastr()->success('Data has been updated!', 'Congrats',['timeOut' => 1000]);
                 $this->closeModalUpdate();
             }
         }
@@ -103,7 +103,7 @@ class Index extends Component
 
         Category::destroy($id);
         $this->categories = Category::all();
-        toastr()->success('Data has been deleted!', 'Congrats',['timeOut' => 3500]);
+        toastr()->success('Data has been deleted!', 'Congrats',['timeOut' => 1000]);
         $this->closeModalDelete();
     }
 
