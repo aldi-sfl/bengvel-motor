@@ -69,7 +69,7 @@ class ListProduct extends Component
             $query->whereIn('category_id', $this->categories);
         })->get();
     }
-
+    
     
 
     public function render()
@@ -81,6 +81,7 @@ class ListProduct extends Component
             'products' => $this->readyToLoad ? $this->products : [],
             'allCategories' => Category::all(),
         ]);
+        
     }
 
     public function addToCart($id){
