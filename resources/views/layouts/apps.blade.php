@@ -21,8 +21,8 @@
      <link rel="stylesheet" href="owlcarousel/owl.theme.default.min.css">
     
     @vite('resources/css/app.css')
-    @livewireStyles
     {{-- @vite(['resources/css/app.css','resources/js/app.js']) --}}
+    @livewireStyles
 </head>
 <body   @if (request()->is('home') ||
             request()->is('/') || 

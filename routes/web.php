@@ -12,6 +12,7 @@ use App\Http\Controllers\paymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HeroController;
+use App\Http\Controllers\HomeController;
 use App\Http\Livewire\Admin\Product\Preview;
 use App\Http\Controllers\ListOrderController;
 use App\Http\Controllers\Payment_MethodController;
@@ -42,7 +43,7 @@ Route::get('/', function () {
     $avatar = session('avatar');
     $heroImage = settings::all();
     return view('main', compact('avatar', 'heroImage'));
-})->name('home');
+})->name('homepage');
 
 
 Auth::routes([
@@ -52,6 +53,9 @@ Auth::routes([
     'verify' => true,
 ]);
 
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 Route::get('/auth/redirect', [SocialController::class, 'redirect'])->name('google.redirect');
@@ -74,10 +78,6 @@ Route::get('/contact', function () {
 })->name('contact');
 
 Route::get('/shop/product/{name}/{hashedId}', [ProductInfoController::class, 'index']);
-
-// checkout
-// regular controller
-// Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->name('checkout.show');
 
 Route::middleware('guest')->group(function () {
         
@@ -152,9 +152,7 @@ Route::middleware('admin')->group(function () {
 });
 
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 // just testing routes\
