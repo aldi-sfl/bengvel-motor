@@ -45,37 +45,37 @@ class ListProduct extends Component
         // ==============
     
     // mixed search & filter
-    // public function search()
-    // {
-    //     $this->products = Product::when($this->searchTerm, function ($query) {
-    //         $query->where('name', 'like', '%'.$this->searchTerm.'%')
-    //               ->orWhere('description', 'like', '%'.$this->searchTerm.'%');
-    //     })->when($this->categories, function ($query) {
-    //         $query->whereIn('category_id', $this->categories);
-    //     })->get();
-    // }
-
     public function search()
     {
         $this->products = Product::when($this->searchTerm, function ($query) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%')
-                  ->orWhere('description', 'like', '%' . $this->searchTerm . '%');
-        })->get();
-    }
-
-    public function filter()
-    {
-        $this->products = Product::when($this->categories, function ($query) {
+            $query->where('name', 'like', '%'.$this->searchTerm.'%')
+                  ->orWhere('description', 'like', '%'.$this->searchTerm.'%');
+        })->when($this->categories, function ($query) {
             $query->whereIn('category_id', $this->categories);
         })->get();
     }
+
+    // public function search()
+    // {
+    //     $this->products = Product::when($this->searchTerm, function ($query) {
+    //         $query->where('name', 'like', '%' . $this->searchTerm . '%')
+    //               ->orWhere('description', 'like', '%' . $this->searchTerm . '%');
+    //     })->get();
+    // }
+
+    // public function filter()
+    // {
+    //     $this->products = Product::when($this->categories, function ($query) {
+    //         $query->whereIn('category_id', $this->categories);
+    //     })->get();
+    // }
     
     
 
     public function render()
     {
         $this->search();
-        $this->filter();
+        // $this->filter();
 
         return view('livewire.user-page.shop-list.list-product', [
             'products' => $this->readyToLoad ? $this->products : [],

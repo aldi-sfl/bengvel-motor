@@ -2,7 +2,7 @@
 
 @section('main_content')
    
-<div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+{{-- <div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
     <div class="flex justify-between">
       <div>
         <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k</h5>
@@ -61,48 +61,52 @@
         </a>
       </div>
     </div>
+</div> --}}
+
+<div class="container mx-auto p-4">
+  <h1 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Sales Report</h1>
+
+  <form action="{{ route('admin') }}" method="GET" class="mb-6">
+      <label for="filter" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Filter by:</label>
+      <select id="filter" name="filter" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option value="all" {{ $filter == 'all' ? 'selected' : '' }}>All Time</option>
+          <option value="last_month" {{ $filter == 'last_month' ? 'selected' : '' }}>Last Month</option>
+          <option value="last_2_months" {{ $filter == 'last_2_months' ? 'selected' : '' }}>Last 2 Months</option>
+          <option value="last_3_months" {{ $filter == 'last_3_months' ? 'selected' : '' }}>Last 3 Months</option>
+          <option value="last_year" {{ $filter == 'last_year' ? 'selected' : '' }}>Last Year</option>
+      </select>
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 w-full sm:w-auto">Apply Filter</button>
+  </form>
+
+  <p class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Total Sales: ${{ number_format($totalSales, 2) }}</p>
+
+  <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="py-3 px-6">Transaction ID</th>
+                  <th scope="col" class="py-3 px-6">User</th>
+                  <th scope="col" class="py-3 px-6">Total Amount</th>
+                  <th scope="col" class="py-3 px-6">Status</th>
+                  <th scope="col" class="py-3 px-6">Payment Method</th>
+                  <th scope="col" class="py-3 px-6">Date</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach ($transactions as $transaction)
+                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <td class="py-4 px-6">{{ $transaction->id }}</td>
+                      <td class="py-4 px-6">{{ $transaction->user->name }}</td>
+                      <td class="py-4 px-6">${{ number_format($transaction->total_amount, 2) }}</td>
+                      <td class="py-4 px-6">{{ $transaction->transaction_status }}</td>
+                      <td class="py-4 px-6">{{ $transaction->method_payment ?: 'N/A' }}</td>
+                      <td class="py-4 px-6">{{ $transaction->created_at->format('Y-m-d H:i:s') }}</td>
+                  </tr>
+              @endforeach
+          </tbody>
+      </table>
+  </div>
 </div>
 
-
-<h1>Sales Report</h1>
-
-<form action="{{ route('admin') }}" method="GET">
-    <label for="filter" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Filter by:</label>
-    <select id="filter" name="filter" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option value="all" {{ $filter == 'all' ? 'selected' : '' }}>All Time</option>
-        <option value="last_month" {{ $filter == 'last_month' ? 'selected' : '' }}>Last Month</option>
-        <option value="last_2_months" {{ $filter == 'last_2_months' ? 'selected' : '' }}>Last 2 Months</option>
-        <option value="last_3_months" {{ $filter == 'last_3_months' ? 'selected' : '' }}>Last 3 Months</option>
-        <option value="last_year" {{ $filter == 'last_year' ? 'selected' : '' }}>Last Year</option>
-    </select>
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Apply Filter</button>
-</form>
-
-<p>Total Sales: ${{ number_format($totalSales, 2) }}</p>
-
-<table>
-    <thead>
-        <tr>
-            <th>Transaction ID</th>
-            <th>User</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-            <th>Payment Method</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($transactions as $transaction)
-            <tr>
-                <td>{{ $transaction->id }}</td>
-                <td>{{ $transaction->user->name }}</td>
-                <td>${{ number_format($transaction->total_amount, 2) }}</td>
-                <td>{{ $transaction->transaction_status }}</td>
-                <td>{{ $transaction->method_payment ?: 'N/A' }}</td>
-                <td>{{ $transaction->created_at->format('Y-m-d H:i:s') }}</td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
 
 @endsection

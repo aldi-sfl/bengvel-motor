@@ -68,4 +68,36 @@ class UserAdminController extends Controller
         toastr()->success('User deleted successfully!', 'Success', ['timeOut' => 1000]);
         return redirect()->back();
     }
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('pages.admin.editUser', compact('user'));
+    }
+
+    // Handle the form submission for updating the user
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:15',
+            'password' => 'nullable|string|min:8',
+            'is_admin' => 'required|boolean',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+        $user->is_admin = $request->is_admin;
+
+        $user->save();
+
+        toastr()->success('User updated successfully!', 'Success', ['timeOut' => 1000]);
+        return redirect()->route('user-admin');
+    }
 }

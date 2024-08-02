@@ -11,7 +11,7 @@
               </svg>
            </button>
           <a href="/" class="flex ms-2 md:me-24">
-            <img src="../image/logo.png" class="h-14 me-3" alt="FlowBite Logo" />
+            <img src="../image/logo.png" class="h-14 me-3" alt="Logo" />
             
           </a>
         </div>

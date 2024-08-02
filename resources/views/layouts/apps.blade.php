@@ -11,14 +11,14 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     
     {{-- tailwind ui component --}}
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    {{-- <link rel="stylesheet" href="https://rsms.me/inter/inter.css"> --}}
 
     <!-- Scripts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
 
      {{-- owl carousel --}}
-     <link rel="stylesheet" href="owlcarousel/owl.carousel.min.css">
-     <link rel="stylesheet" href="owlcarousel/owl.theme.default.min.css">
+     {{-- <link rel="stylesheet" href="owlcarousel/owl.carousel.min.css">
+     <link rel="stylesheet" href="owlcarousel/owl.theme.default.min.css"> --}}
     
     @vite('resources/css/app.css')
     {{-- @vite(['resources/css/app.css','resources/js/app.js']) --}}
@@ -48,11 +48,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 
      {{-- owl carousel --}}
-     <script src="jquery.min.js"></script>
-     <script src="owlcarousel/owl.carousel.min.js"></script>
+     {{-- <script src="jquery.min.js"></script>
+     <script src="owlcarousel/owl.carousel.min.js"></script> --}}
 
     @include('partials.footer')
-    @include('partials.speedDial')
+    @include('partials.speedDial') {{-- whatsapp --}}
     @livewireScripts
 </body>
 </html>

@@ -82,7 +82,7 @@ Route::get('/shop/product/{name}/{hashedId}', [ProductInfoController::class, 'in
 Route::middleware('guest')->group(function () {
         
         
-        Route::view('/register', 'main');
+// Route::view('/register', 'main');
         
     // Route::get('/login', Login::class)->name('login');
     // Route::get('/register', Register::class)->name('register');
@@ -140,6 +140,9 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/users/add', [UserAdminController::class, 'addUser'])->name('add-user');
     Route::post('/admin/users/add/create', [UserAdminController::class, 'create'])->name('create-user');
     Route::delete('/user/{id}', [UserAdminController::class, 'delete'])->name('user.delete');
+
+    Route::get('/admin/users/edit/{id}', [UserAdminController::class, 'edit'])->name('edit-user');
+    Route::put('/admin/users/{id}', [UserAdminController::class, 'update'])->name('update-user');
 
     Route::get('/admin/list-payment', [Payment_MethodController::class, 'index'])->name('list-payment');
     Route::post('/admin/list-payment', [Payment_MethodController::class, 'store'])->name('list-payment.store');

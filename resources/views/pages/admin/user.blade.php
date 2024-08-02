@@ -4,7 +4,7 @@
 
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <h2 class="text-4xl font-bold dark:text-white flex flex-col justify-center items-center pb-6">Manage Category</h2>
+    <h2 class="text-4xl font-bold dark:text-white flex flex-col justify-center items-center pb-6">Manage Users</h2>
     <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative">
@@ -68,6 +68,12 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
+                    <a href="{{ route('edit-user', ['id' => $item->id]) }}">
+                        <button type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">
+                            Edit
+                        </button>
+                    </a>
+                    
                     <form action="{{ route('user.delete', ['id' => $item->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?')">
                         @csrf
                         @method('DELETE')
